@@ -1,7 +1,7 @@
 "use client";
 
 import { RolePage } from "@/components/RolePage";
-import { LeadershipView } from "@/views/LeadershipView";
+import { LeadershipView } from "@/lib/lazyViews";
 
 export default function Page() {
   return (

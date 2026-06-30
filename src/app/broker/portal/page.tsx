@@ -1,7 +1,7 @@
 "use client";
 
 import { RolePage } from "@/components/RolePage";
-import { BrokerPortalView } from "@/views/BrokerViews";
+import { BrokerPortalView } from "@/lib/lazyViews";
 
 export default function Page() {
   return (

@@ -1,7 +1,7 @@
 "use client";
 
 import { RolePage } from "@/components/RolePage";
-import { SlaQueueView } from "@/views/SlaQueueView";
+import { SlaQueueView } from "@/lib/lazyViews";
 
 export default function Page() {
   return (

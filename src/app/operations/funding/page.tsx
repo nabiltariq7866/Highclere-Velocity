@@ -1,7 +1,7 @@
 "use client";
 
 import { RolePage } from "@/components/RolePage";
-import { FundingView } from "@/views/FundingView";
+import { FundingView } from "@/lib/lazyViews";
 
 export default function Page() {
   return (

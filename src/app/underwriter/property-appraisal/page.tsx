@@ -1,7 +1,7 @@
 "use client";
 
 import { RolePage } from "@/components/RolePage";
-import { PropertyAppraisalView } from "@/views/PropertyAppraisalView";
+import { PropertyAppraisalView } from "@/lib/lazyViews";
 
 export default function Page() {
   return (

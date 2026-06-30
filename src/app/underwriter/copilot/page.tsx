@@ -1,7 +1,7 @@
 "use client";
 
 import { RolePage } from "@/components/RolePage";
-import { CopilotView } from "@/views/CopilotView";
+import { CopilotView } from "@/lib/lazyViews";
 
 export default function Page() {
   return (

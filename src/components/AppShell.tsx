@@ -12,7 +12,7 @@ import {
   NAV_EXECUTIVE,
   NAV_OPERATIONS,
   NAV_UNDERWRITER,
-} from "@/data/mockData";
+} from "@/data/navConfig";
 import type { NavItem, SessionUser, UserRole } from "@/lib/types";
 import { clearSessionCookies } from "@/lib/session";
 

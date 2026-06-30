@@ -1,7 +1,7 @@
 "use client";
 
 import { RolePage } from "@/components/RolePage";
-import { CommunicationsView } from "@/views/CommunicationsView";
+import { CommunicationsView } from "@/lib/lazyViews";
 
 export default function Page() {
   return (

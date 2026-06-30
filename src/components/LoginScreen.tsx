@@ -1,10 +1,10 @@
 "use client";
 
-import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useEffect, useState, useTransition } from "react";
 import { NavIcon } from "@/components/NavIcon";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import { DEMO_USERS } from "@/data/mockData";
+import { DEMO_USERS } from "@/data/demoUsers";
 import { setSessionCookies } from "@/lib/session";
 
 const ROLE_DESCRIPTIONS: Record<string, string> = {
@@ -18,11 +18,20 @@ const ROLE_DESCRIPTIONS: Record<string, string> = {
 export function LoginScreen() {
   const router = useRouter();
   const [loading, setLoading] = useState<string | null>(null);
+  const [, startTransition] = useTransition();
+
+  useEffect(() => {
+    DEMO_USERS.forEach((user) => {
+      router.prefetch(user.redirectTo);
+    });
+  }, [router]);
 
   const handleLogin = (user: (typeof DEMO_USERS)[0]) => {
     setLoading(user.id);
     setSessionCookies(user);
-    router.push(user.redirectTo);
+    startTransition(() => {
+      router.replace(user.redirectTo);
+    });
   };
 
   return (
@@ -96,7 +105,7 @@ export function LoginScreen() {
                 key={user.id}
                 type="button"
                 onClick={() => handleLogin(user)}
-                disabled={loading === user.id}
+                disabled={loading !== null}
                 style={{
                   width: "100%",
                   background: "var(--card)",
@@ -104,12 +113,14 @@ export function LoginScreen() {
                   borderRadius: "14px",
                   padding: "18px 20px",
                   textAlign: "left",
-                  cursor: "pointer",
+                  cursor: loading !== null ? "wait" : "pointer",
                   display: "flex",
                   alignItems: "center",
                   gap: "14px",
+                  opacity: loading && loading !== user.id ? 0.6 : 1,
                 }}
                 onMouseEnter={(e) => {
+                  router.prefetch(user.redirectTo);
                   e.currentTarget.style.borderColor = "var(--accent)";
                 }}
                 onMouseLeave={(e) => {

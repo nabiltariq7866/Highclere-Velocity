@@ -1,7 +1,7 @@
 "use client";
 
 import { RolePage } from "@/components/RolePage";
-import { ModelOpsView } from "@/views/ModelOpsView";
+import { ModelOpsView } from "@/lib/lazyViews";
 
 export default function Page() {
   return (

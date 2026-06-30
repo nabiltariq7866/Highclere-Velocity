@@ -1,7 +1,13 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import { ROLE_HOME } from "@/lib/routes";
+import type { UserRole } from "@/lib/types";
 
 const ROLES = ["executive", "operations", "underwriter", "compliance", "broker"] as const;
+
+function isRole(value: string): value is UserRole {
+  return ROLES.includes(value as (typeof ROLES)[number]);
+}
 
 export function middleware(request: NextRequest) {
   const sessionCookie = request.cookies.get("hcv_session");
@@ -15,18 +21,25 @@ export function middleware(request: NextRequest) {
   }
 
   if (sessionCookie && roleCookie) {
-    const role = roleCookie.value;
-    const allowed = ROLES.includes(role as (typeof ROLES)[number]);
+    const roleValue = roleCookie.value;
+    if (!isRole(roleValue)) {
+      return NextResponse.next();
+    }
+    const role = roleValue;
     const rolePrefix = `/${role}`;
-    const isAllowed = allowed && pathname.startsWith(rolePrefix);
+    const isAllowed = pathname.startsWith(rolePrefix);
+
+    if (pathname === rolePrefix || pathname === `${rolePrefix}/`) {
+      return NextResponse.redirect(new URL(ROLE_HOME[role], request.url));
+    }
 
     if (!isAllowed && pathname !== "/login") {
-      return NextResponse.redirect(new URL(rolePrefix, request.url));
+      return NextResponse.redirect(new URL(ROLE_HOME[role], request.url));
     }
   }
 
-  if (pathname === "/login" && sessionCookie && roleCookie) {
-    return NextResponse.redirect(new URL(`/${roleCookie.value}`, request.url));
+  if (pathname === "/login" && sessionCookie && roleCookie && isRole(roleCookie.value)) {
+    return NextResponse.redirect(new URL(ROLE_HOME[roleCookie.value], request.url));
   }
 
   return NextResponse.next();

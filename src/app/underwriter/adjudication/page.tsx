@@ -1,7 +1,7 @@
 "use client";
 
 import { RolePage } from "@/components/RolePage";
-import { AdjudicationView } from "@/views/AdjudicationView";
+import { AdjudicationView } from "@/lib/lazyViews";
 
 export default function Page() {
   return (

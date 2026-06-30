@@ -1,7 +1,7 @@
 "use client";
 
 import { RolePage } from "@/components/RolePage";
-import { ProvinceExpansionView } from "@/views/ProvinceExpansionView";
+import { ProvinceExpansionView } from "@/lib/lazyViews";
 
 export default function Page() {
   return (

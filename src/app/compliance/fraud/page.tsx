@@ -1,7 +1,7 @@
 "use client";
 
 import { RolePage } from "@/components/RolePage";
-import { FraudView } from "@/views/FraudView";
+import { FraudView } from "@/lib/lazyViews";
 
 export default function Page() {
   return (

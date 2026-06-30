@@ -1,7 +1,7 @@
 "use client";
 
 import { RolePage } from "@/components/RolePage";
-import { ComplianceAuditView } from "@/views/ComplianceAuditView";
+import { ComplianceAuditView } from "@/lib/lazyViews";
 
 export default function Page() {
   return (

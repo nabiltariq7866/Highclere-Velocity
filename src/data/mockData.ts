@@ -2,13 +2,28 @@ import type {
   Broker,
   FileStage,
   MortgageSubmission,
-  NavItem,
   ProductType,
   Province,
-  SessionUser,
   SlaStatus,
 } from "@/lib/types";
 import { PRODUCTS, PROVINCES } from "@/lib/types";
+import { DEMO_USERS, getUserForRole } from "@/data/demoUsers";
+import {
+  NAV_BROKER,
+  NAV_COMPLIANCE,
+  NAV_EXECUTIVE,
+  NAV_OPERATIONS,
+  NAV_UNDERWRITER,
+} from "@/data/navConfig";
+
+export { DEMO_USERS, getUserForRole };
+export {
+  NAV_BROKER,
+  NAV_COMPLIANCE,
+  NAV_EXECUTIVE,
+  NAV_OPERATIONS,
+  NAV_UNDERWRITER,
+};
 
 const BORROWERS = [
   "Sarah Chen", "Michael O'Brien", "Priya Sharma", "James Wilson", "Amélie Tremblay",
@@ -101,54 +116,6 @@ function genSubmissions(count: number): MortgageSubmission[] {
   });
 }
 
-export const DEMO_USERS: SessionUser[] = [
-  {
-    id: "executive",
-    name: "Leon Hartwell",
-    role: "executive",
-    avatar: "LH",
-    email: "leon@highclere.ca",
-    title: "Chief Executive Officer",
-    redirectTo: "/executive",
-  },
-  {
-    id: "operations",
-    name: "Maria Santos",
-    role: "operations",
-    avatar: "MS",
-    email: "maria.santos@highclere.ca",
-    title: "VP Lending Operations",
-    redirectTo: "/operations",
-  },
-  {
-    id: "underwriter",
-    name: "Karen Mitchell",
-    role: "underwriter",
-    avatar: "KM",
-    email: "karen.mitchell@highclere.ca",
-    title: "Senior Underwriter",
-    redirectTo: "/underwriter",
-  },
-  {
-    id: "compliance",
-    name: "David Okonkwo",
-    role: "compliance",
-    avatar: "DO",
-    email: "david.okonkwo@highclere.ca",
-    title: "Chief Compliance Officer",
-    redirectTo: "/compliance",
-  },
-  {
-    id: "broker",
-    name: "Angela Morrison",
-    role: "broker",
-    avatar: "AM",
-    email: "angela@dominionlending.ca",
-    title: "Mortgage Broker — Dominion Lending",
-    redirectTo: "/broker",
-  },
-];
-
 export const ALL_SUBMISSIONS = genSubmissions(120);
 export const ACTIVE_SUBMISSIONS = ALL_SUBMISSIONS.filter(
   (s) => !["funded", "declined", "cancelled"].includes(s.stage)
@@ -225,44 +192,6 @@ export const FUNDING_QUEUE = {
   brokerFollowUp: 12,
 };
 
-export const NAV_EXECUTIVE: NavItem[] = [
-  { id: "command-center", label: "Command Center", icon: "command", group: "Overview", slug: "command-center" },
-  { id: "leadership", label: "Leadership Dashboard", icon: "leadership", group: "Executive", slug: "leadership" },
-  { id: "portfolio", label: "Portfolio & Capital", icon: "portfolio", group: "Executive", slug: "portfolio" },
-  { id: "province", label: "Province Expansion", icon: "province", group: "Executive", slug: "province-expansion" },
-  { id: "model-ops", label: "AI Model Operations", icon: "model", group: "AI & Governance", slug: "model-ops" },
-];
-
-export const NAV_OPERATIONS: NavItem[] = [
-  { id: "command-center", label: "Command Center", icon: "command", group: "Operations", slug: "command-center" },
-  { id: "intake", label: "AI Intake & Quality", icon: "intake", group: "Operations", slug: "intake" },
-  { id: "broker-intel", label: "Broker Intelligence", icon: "brokers", group: "Partners", slug: "broker-intelligence" },
-  { id: "communications", label: "Broker Communications", icon: "comms", group: "Partners", slug: "communications" },
-  { id: "sla", label: "SLA & Queue Mgmt", icon: "sla", group: "Capacity", slug: "sla-queue" },
-  { id: "funding", label: "Funding Readiness", icon: "funding", group: "Closing", slug: "funding" },
-  { id: "integrations", label: "Integration Layer", icon: "integrations", group: "Platform", slug: "integrations" },
-];
-
-export const NAV_UNDERWRITER: NavItem[] = [
-  { id: "adjudication", label: "Adjudication Engine", icon: "adjudication", group: "Underwriting", slug: "adjudication" },
-  { id: "products", label: "Product Matching", icon: "products", group: "Underwriting", slug: "product-matching" },
-  { id: "documents", label: "Document & Income", icon: "documents", group: "Verification", slug: "document-review" },
-  { id: "property", label: "Property & Appraisal", icon: "property", group: "Verification", slug: "property-appraisal" },
-  { id: "copilot", label: "Underwriter Copilot", icon: "copilot", group: "AI", slug: "copilot" },
-];
-
-export const NAV_COMPLIANCE: NavItem[] = [
-  { id: "fraud", label: "Fraud & Integrity", icon: "fraud", group: "Risk", slug: "fraud" },
-  { id: "audit", label: "Compliance & Audit", icon: "audit", group: "Governance", slug: "compliance-audit" },
-];
-
-export const NAV_BROKER: NavItem[] = [
-  { id: "portal", label: "Broker Portal", icon: "portal", group: "Self-Service", slug: "portal" },
-  { id: "scenario", label: "Scenario Desk", icon: "scenario", group: "Self-Service", slug: "scenario-desk" },
-  { id: "my-files", label: "My Submissions", icon: "files", group: "Pipeline", slug: "my-files" },
-  { id: "conditions", label: "Conditions Tracker", icon: "conditions", group: "Pipeline", slug: "conditions" },
-];
-
 export const VOLUME_BY_MONTH = [
   { month: "Jul", submissions: 320, funded: 245, approvals: 278 },
   { month: "Aug", submissions: 380, funded: 290, approvals: 325 },
@@ -326,10 +255,6 @@ export const MODEL_METRICS = {
   lastRetrain: "2026-06-15",
   decisionsLearned: 1847,
 };
-
-export function getUserForRole(role: SessionUser["role"]) {
-  return DEMO_USERS.find((u) => u.role === role)!;
-}
 
 export function getSubmissionsByBroker(brokerName: string) {
   return ALL_SUBMISSIONS.filter((s) => s.broker === brokerName);
