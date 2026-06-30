@@ -1,0 +1,14 @@
+@import "../styles/theme.css";
+@import "../styles/layout.css";
+@import "../styles/components.css";
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
