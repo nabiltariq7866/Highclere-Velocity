@@ -4,7 +4,7 @@ import { useState } from "react";
 import { DemoMoment } from "@/components/DemoMoment";
 import { useDemoState } from "@/context/DemoStateProvider";
 import { FRAUD_ALERTS } from "@/data/mockData";
-import { FRAUD_FILE_DETAILS } from "@/data/extendedMockData";
+import { FRAUD_FILE_DETAILS, FRAUD_EXTENDED_SIGNALS } from "@/data/extendedMockData";
 
 export function FraudView() {
   const { fraudStatuses, setFraudStatus } = useDemoState();
@@ -66,6 +66,19 @@ export function FraudView() {
           ))}
         </div>
       )}
+
+      <div className="card" style={{ marginTop: 16 }}>
+        <div style={{ fontWeight: 700, marginBottom: 12 }}>Extended Risk Indicators</div>
+        {FRAUD_EXTENDED_SIGNALS.map((s) => (
+          <div key={s.file + s.type} className="stat-row">
+            <div>
+              <div style={{ fontWeight: 600 }}>{s.type}</div>
+              <div style={{ fontSize: 11 }}>{s.file} — {s.detail}</div>
+            </div>
+            <span className={`badge ${s.severity === "High" ? "badge-red" : "badge-amber"}`}>{s.severity}</span>
+          </div>
+        ))}
+      </div>
 
       <div className="ai-panel" style={{ marginTop: 16 }}>
         <strong>Cross-File Pattern #FP-2026-044</strong> — Identical pay stub template on 4 applications.

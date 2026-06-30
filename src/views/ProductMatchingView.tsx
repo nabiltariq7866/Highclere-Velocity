@@ -73,6 +73,31 @@ export function ProductMatchingView() {
         <div style={{ fontSize: 18, fontWeight: 800, color: "var(--accent)" }}>Business-for-Self — 88% policy fit</div>
         <p style={{ fontSize: 13, margin: "8px 0 0" }}>Per BFS v2.4: 2+ years SE, credit ≥620, LTV ≤80%. Missing bank statements block underwriting path.</p>
       </div>
+
+      <div className="card" style={{ marginTop: 16 }}>
+        <div style={{ fontWeight: 700, marginBottom: 12 }}>Side-by-Side Product Comparison</div>
+        <table className="data-table">
+          <thead>
+            <tr><th>Product</th><th>Fit</th><th>Min Credit</th><th>Max LTV</th><th>Best For</th></tr>
+          </thead>
+          <tbody>
+            {[
+              { product: "Prime", fit: 42, credit: 680, ltv: 80, for: "Salaried, strong credit" },
+              { product: "Insurable", fit: 55, credit: 600, ltv: 95, for: "Insured high-ratio" },
+              { product: "Alt-A", fit: 71, credit: 620, ltv: 85, for: "Non-traditional income" },
+              { product: "Business-for-Self", fit: 88, credit: 620, ltv: 80, for: "Self-employed 2+ yrs" },
+            ].map((p) => (
+              <tr key={p.product} style={p.product === "Business-for-Self" ? { background: "var(--highlight)" } : undefined}>
+                <td style={{ fontWeight: 600 }}>{p.product}{p.fit >= 85 && <span className="badge badge-green" style={{ marginLeft: 6 }}>Best</span>}</td>
+                <td><ScoreBadge score={p.fit} /></td>
+                <td>{p.credit}</td>
+                <td>{p.ltv}%</td>
+                <td style={{ fontSize: 12 }}>{p.for}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </>
   );
 }

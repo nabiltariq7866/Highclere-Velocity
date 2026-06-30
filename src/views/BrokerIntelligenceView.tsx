@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { DemoMoment } from "@/components/DemoMoment";
 import { BROKERS } from "@/data/mockData";
-import { DECLINE_REASONS_BY_BROKER, NEW_BROKER_ONBOARDING } from "@/data/extendedMockData";
+import { DECLINE_REASONS_BY_BROKER, NEW_BROKER_ONBOARDING, HIGH_VALUE_BROKERS, BROKER_GROWTH_ALERTS, ACCOUNT_REP_DASHBOARD, BROKER_PRODUCT_SEGMENTATION } from "@/data/extendedMockData";
 import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 
 export function BrokerIntelligenceView() {
@@ -59,6 +59,61 @@ export function BrokerIntelligenceView() {
               Recommend BFS document training — projected 2.3 day funding improvement if missing docs drop 15%.
             </div>
           )}
+        </div>
+      </div>
+
+      <div className="card" style={{ marginTop: 16 }}>
+        <div style={{ fontWeight: 700, marginBottom: 12 }}>High-Value Broker Prioritization</div>
+        <table className="data-table">
+          <thead>
+            <tr><th>Broker</th><th>Brokerage</th><th>Volume/mo</th><th>Funded YTD</th><th>Tier</th><th>SLA</th></tr>
+          </thead>
+          <tbody>
+            {HIGH_VALUE_BROKERS.map((b) => (
+              <tr key={b.name}>
+                <td style={{ fontWeight: 600 }}>{b.name}</td>
+                <td>{b.brokerage}</td>
+                <td>{b.volume}</td>
+                <td>{b.fundedYtd}</td>
+                <td><span className="badge badge-green">{b.priority}</span></td>
+                <td>{b.sla}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <div className="grid-2" style={{ marginTop: 16 }}>
+        <div className="card">
+          <div style={{ fontWeight: 700, marginBottom: 12 }}>Account Representative Dashboard</div>
+          {ACCOUNT_REP_DASHBOARD.map((r) => (
+            <div key={r.rep} className="stat-row">
+              <div>
+                <div style={{ fontWeight: 600 }}>{r.rep}</div>
+                <div style={{ fontSize: 11, color: "var(--muted)" }}>{r.brokers} brokers · Top: {r.topBroker}</div>
+              </div>
+              <div style={{ textAlign: "right", fontSize: 12 }}>
+                <div>{r.volume} files/mo</div>
+                <span className={`badge ${r.issues > 5 ? "badge-amber" : "badge-green"}`}>{r.issues} issues</span>
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="card">
+          <div style={{ fontWeight: 700, marginBottom: 12 }}>Broker Segmentation by Product</div>
+          {BROKER_PRODUCT_SEGMENTATION.map((s) => (
+            <div key={s.segment} className="stat-row">
+              <span>{s.segment}</span>
+              <span><strong>{s.brokers}</strong> brokers · {s.volume} <span style={{ color: "var(--accent)" }}>{s.trend}</span></span>
+            </div>
+          ))}
+          <div style={{ fontWeight: 700, margin: "16px 0 8px", fontSize: 13 }}>Growth & Risk Alerts</div>
+          {BROKER_GROWTH_ALERTS.map((a) => (
+            <div key={a.broker} className="stat-row">
+              <span style={{ fontSize: 12 }}>{a.signal}</span>
+              <span className={`badge ${a.type === "Risk" ? "badge-amber" : "badge-green"}`}>{a.type}</span>
+            </div>
+          ))}
         </div>
       </div>
 

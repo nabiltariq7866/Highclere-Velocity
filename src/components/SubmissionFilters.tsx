@@ -29,12 +29,16 @@ export function SubmissionFiltersBar({
   resultCount,
   totalCount,
   brokers,
+  brokerages = [],
+  underwriters = [],
 }: {
   filters: SubmissionFilters;
   onChange: (f: SubmissionFilters) => void;
   resultCount: number;
   totalCount: number;
   brokers: string[];
+  brokerages?: string[];
+  underwriters?: string[];
 }) {
   const set = (partial: Partial<SubmissionFilters>) => onChange({ ...filters, ...partial });
 
@@ -111,6 +115,62 @@ export function SubmissionFiltersBar({
           </select>
         </div>
         <div>
+          <label style={{ fontSize: 10, fontWeight: 700, color: "var(--muted)", textTransform: "uppercase" }}>Brokerage</label>
+          <select
+            className="top-bar-search"
+            style={{ width: "100%", marginTop: 4 }}
+            value={filters.brokerage}
+            onChange={(e) => set({ brokerage: e.target.value })}
+          >
+            <option value="">All brokerages</option>
+            {brokerages.map((b) => (
+              <option key={b} value={b}>{b}</option>
+            ))}
+          </select>
+        </div>
+        <div>
+          <label style={{ fontSize: 10, fontWeight: 700, color: "var(--muted)", textTransform: "uppercase" }}>Underwriter</label>
+          <select
+            className="top-bar-search"
+            style={{ width: "100%", marginTop: 4 }}
+            value={filters.underwriter}
+            onChange={(e) => set({ underwriter: e.target.value })}
+          >
+            <option value="">All underwriters</option>
+            {underwriters.map((u) => (
+              <option key={u} value={u}>{u}</option>
+            ))}
+          </select>
+        </div>
+        <div>
+          <label style={{ fontSize: 10, fontWeight: 700, color: "var(--muted)", textTransform: "uppercase" }}>Borrower Type</label>
+          <select
+            className="top-bar-search"
+            style={{ width: "100%", marginTop: 4 }}
+            value={filters.borrowerType}
+            onChange={(e) => set({ borrowerType: e.target.value as SubmissionFilters["borrowerType"] })}
+          >
+            <option value="all">All types</option>
+            <option value="salaried">Salaried</option>
+            <option value="self_employed">Self-Employed / BFS</option>
+            <option value="other">Other income</option>
+          </select>
+        </div>
+        <div>
+          <label style={{ fontSize: 10, fontWeight: 700, color: "var(--muted)", textTransform: "uppercase" }}>Deal Size</label>
+          <select
+            className="top-bar-search"
+            style={{ width: "100%", marginTop: 4 }}
+            value={filters.dealSize}
+            onChange={(e) => set({ dealSize: e.target.value as SubmissionFilters["dealSize"] })}
+          >
+            <option value="all">All sizes</option>
+            <option value="under_500k">Under $500K</option>
+            <option value="500k_750k">$500K – $750K</option>
+            <option value="over_750k">Over $750K</option>
+          </select>
+        </div>
+        <div>
           <label style={{ fontSize: 10, fontWeight: 700, color: "var(--muted)", textTransform: "uppercase" }}>SLA</label>
           <select
             className="top-bar-search"
@@ -143,6 +203,10 @@ export function SubmissionFiltersBar({
       {(filters.province !== "all" ||
         filters.product !== "all" ||
         filters.broker ||
+        filters.brokerage ||
+        filters.underwriter ||
+        filters.borrowerType !== "all" ||
+        filters.dealSize !== "all" ||
         filters.slaStatus !== "all" ||
         filters.stage !== "all" ||
         filters.quick !== "all") && (

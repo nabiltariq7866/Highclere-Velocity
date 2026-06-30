@@ -3,7 +3,7 @@
 import { DemoMoment } from "@/components/DemoMoment";
 import { useDemoState } from "@/context/DemoStateProvider";
 import { INTEGRATIONS } from "@/data/mockData";
-import { DATA_MAPPINGS, EMAIL_INTAKE_QUEUE, PILOT_DATA_STATS } from "@/data/extendedMockData";
+import { DATA_MAPPINGS, EMAIL_INTAKE_QUEUE, PILOT_DATA_STATS, UNIFIED_DATA_LAYERS } from "@/data/extendedMockData";
 
 export function IntegrationsView() {
   const { integrationEvents, simulateIntegration } = useDemoState();
@@ -66,6 +66,19 @@ export function IntegrationsView() {
             </div>
           ))}
         </div>
+      </div>
+
+      <div className="card" style={{ marginTop: 16 }}>
+        <div style={{ fontWeight: 700, marginBottom: 12 }}>Unified Mortgage Data Model — Layers</div>
+        {UNIFIED_DATA_LAYERS.map((l) => (
+          <div key={l.layer} className="stat-row">
+            <div>
+              <div style={{ fontWeight: 600 }}>{l.layer}</div>
+              <div style={{ fontSize: 11, color: "var(--muted)" }}>{l.entities}</div>
+            </div>
+            <span style={{ fontSize: 11 }}>{l.sources}</span>
+          </div>
+        ))}
       </div>
 
       <div className="ai-panel" style={{ marginTop: 16 }}>

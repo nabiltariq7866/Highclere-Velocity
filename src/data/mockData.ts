@@ -165,6 +165,8 @@ export const COMMAND_CENTER_STATS = {
   fundedThisMonth: 187,
   avgDecisionHours: 4.2,
   conditionClearanceDays: 3.1,
+  declinesToday: 3,
+  conditionsOutstanding: 142,
 };
 
 export const BROKERS: Broker[] = BROKER_NAMES.map((name, i) => ({

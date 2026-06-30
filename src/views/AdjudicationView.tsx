@@ -6,13 +6,14 @@ import { SubmissionFiltersBar } from "@/components/SubmissionFilters";
 import { ScoreBadge, SlaBadge, StageBadge, formatCurrency } from "@/components/StatusBadges";
 import { useDemoState } from "@/context/DemoStateProvider";
 import { ADJUDICATION_BATCH, ALL_SUBMISSIONS } from "@/data/mockData";
-import { DEFAULT_FILTERS, filterSubmissions } from "@/lib/filterSubmissions";
+import { DEFAULT_FILTERS, filterSubmissions, getUniqueBrokers, getUniqueBrokerages, getUniqueUnderwriters } from "@/lib/filterSubmissions";
 import type { SubmissionFilters } from "@/lib/filterSubmissions";
 
 export function AdjudicationView() {
   const [filters, setFilters] = useState<SubmissionFilters>({ ...DEFAULT_FILTERS, quick: "all" });
   const { setUwDecision } = useDemoState();
-  const batch = useMemo(() => filterSubmissions(ALL_SUBMISSIONS.slice(0, 50), filters), [filters]);
+  const batchSource = ALL_SUBMISSIONS.slice(0, 50);
+  const batch = useMemo(() => filterSubmissions(batchSource, filters), [filters]);
 
   const fastTrack = batch.filter((s) => s.fastTrack);
   const docFollow = batch.filter((s) => s.missingDocs.length > 0 && !s.fastTrack);
@@ -43,7 +44,9 @@ export function AdjudicationView() {
         onChange={setFilters}
         resultCount={batch.length}
         totalCount={50}
-        brokers={[...new Set(ALL_SUBMISSIONS.slice(0, 50).map((s) => s.broker))].sort()}
+        brokers={getUniqueBrokers(batchSource)}
+        brokerages={getUniqueBrokerages(batchSource)}
+        underwriters={getUniqueUnderwriters(batchSource)}
       />
 
       <div className="kpi-grid">

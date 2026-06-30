@@ -9,7 +9,7 @@ import {
   COMMAND_CENTER_STATS,
   VOLUME_BY_MONTH,
 } from "@/data/mockData";
-import { DEFAULT_FILTERS, filterSubmissions, getUniqueBrokers } from "@/lib/filterSubmissions";
+import { DEFAULT_FILTERS, filterSubmissions, getUniqueBrokers, getUniqueBrokerages, getUniqueUnderwriters } from "@/lib/filterSubmissions";
 import type { SubmissionFilters } from "@/lib/filterSubmissions";
 import { STAGE_LABELS } from "@/lib/types";
 import type { FileStage } from "@/lib/types";
@@ -37,6 +37,8 @@ const STAGE_ORDER: FileStage[] = [
 export function CommandCenterView() {
   const [filters, setFilters] = useState<SubmissionFilters>({ ...DEFAULT_FILTERS });
   const brokers = useMemo(() => getUniqueBrokers(ACTIVE_SUBMISSIONS), []);
+  const brokerages = useMemo(() => getUniqueBrokerages(ACTIVE_SUBMISSIONS), []);
+  const underwriters = useMemo(() => getUniqueUnderwriters(ACTIVE_SUBMISSIONS), []);
 
   const filtered = useMemo(
     () => filterSubmissions(ACTIVE_SUBMISSIONS, filters),
@@ -86,6 +88,8 @@ export function CommandCenterView() {
         resultCount={filtered.length}
         totalCount={ACTIVE_SUBMISSIONS.length}
         brokers={brokers}
+        brokerages={brokerages}
+        underwriters={underwriters}
       />
 
       <div className="hero-banner">
@@ -134,6 +138,14 @@ export function CommandCenterView() {
           <div className="kpi-label">Funded This Month</div>
           <div className="kpi-value">{COMMAND_CENTER_STATS.fundedThisMonth}</div>
           <div className="kpi-trend up">↑ 12% MoM</div>
+        </div>
+        <div className="kpi-card">
+          <div className="kpi-label">Declines Today</div>
+          <div className="kpi-value">{COMMAND_CENTER_STATS.declinesToday}</div>
+        </div>
+        <div className="kpi-card">
+          <div className="kpi-label">Conditions Outstanding</div>
+          <div className="kpi-value">{COMMAND_CENTER_STATS.conditionsOutstanding}</div>
         </div>
         <div className="kpi-card">
           <div className="kpi-label">Appraisal Waiting (filtered)</div>
@@ -199,6 +211,7 @@ export function CommandCenterView() {
                 <th>File</th>
                 <th>Borrower</th>
                 <th>Broker</th>
+                <th>Brokerage</th>
                 <th>Product</th>
                 <th>Province</th>
                 <th>Amount</th>
@@ -213,6 +226,7 @@ export function CommandCenterView() {
                   <td style={{ fontWeight: 600 }}>{f.fileNumber}</td>
                   <td>{f.borrower}</td>
                   <td>{f.broker}</td>
+                  <td style={{ fontSize: 12 }}>{f.brokerage}</td>
                   <td>{f.product}</td>
                   <td>{f.province}</td>
                   <td>{formatCurrency(f.amount)}</td>

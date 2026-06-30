@@ -6,6 +6,7 @@ import { UploadSimulator } from "@/components/UploadSimulator";
 import { ScoreBadge, StageBadge, formatCurrency } from "@/components/StatusBadges";
 import { useDemoState } from "@/context/DemoStateProvider";
 import { getSubmissionsByBroker, GOLDEN_FILE } from "@/data/mockData";
+import { BROKER_COMM_TIMELINE, BROKER_EDUCATION_TIPS } from "@/data/extendedMockData";
 import { runScenario, type BorrowerType, type TransactionType } from "@/lib/scenarioEngine";
 import type { Province } from "@/lib/types";
 import { PROVINCES } from "@/lib/types";
@@ -79,6 +80,21 @@ export function BrokerPortalView() {
         defaultTargetId="bank"
       />
 
+      <div className="card" style={{ marginBottom: 16 }}>
+        <div style={{ fontWeight: 700, marginBottom: 12 }}>Communication Timeline — {GOLDEN_FILE.fileNumber}</div>
+        <div className="timeline">
+          {BROKER_COMM_TIMELINE.map((t, i) => (
+            <div key={i} className="timeline-item">
+              <div className="timeline-dot" />
+              <div>
+                <div style={{ fontSize: 11, color: "var(--muted)" }}>{t.time} · {t.from}</div>
+                <div style={{ fontSize: 13 }}>{t.event}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
       <div className="card">
         <div style={{ fontWeight: 700, marginBottom: 12 }}>My Submissions</div>
         <table className="data-table">
@@ -150,6 +166,19 @@ export function BrokerScenarioView() {
     <>
       <h1 className="page-title">Scenario Desk</h1>
       <p className="page-subtitle">Pre-check product fit — change inputs and run scenario to see live results</p>
+
+      <DemoMoment>
+        Pre-submit scenario check — live product fit, friction warnings, and document checklist before you submit.
+      </DemoMoment>
+
+      <div className="card" style={{ marginBottom: 16 }}>
+        <div style={{ fontWeight: 700, marginBottom: 8 }}>Broker Education Tips</div>
+        <ul style={{ margin: 0, paddingLeft: 18, fontSize: 13 }}>
+          {BROKER_EDUCATION_TIPS.map((t) => (
+            <li key={t} style={{ marginBottom: 4 }}>{t}</li>
+          ))}
+        </ul>
+      </div>
 
       <div className="card">
         <div className="grid-2" style={{ marginBottom: 0 }}>

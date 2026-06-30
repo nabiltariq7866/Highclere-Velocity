@@ -3,7 +3,7 @@
 import { DemoMoment } from "@/components/DemoMoment";
 import { useDemoState } from "@/context/DemoStateProvider";
 import { FUNDING_QUEUE } from "@/data/mockData";
-import { FUNDING_FILES } from "@/data/extendedMockData";
+import { FUNDING_FILES, LATE_FUNDING_DELAYS } from "@/data/extendedMockData";
 
 export function FundingView() {
   const { fundingReminders, sendFundingReminder } = useDemoState();
@@ -22,6 +22,24 @@ export function FundingView() {
         <div className="kpi-card"><div className="kpi-label">Ready to Fund</div><div className="kpi-value" style={{ color: "var(--accent)" }}>{FUNDING_QUEUE.readyToFund}</div></div>
         <div className="kpi-card"><div className="kpi-label">Blocked — Solicitor</div><div className="kpi-value" style={{ color: "var(--amber-500)" }}>{FUNDING_QUEUE.blockedSolicitor}</div></div>
         <div className="kpi-card"><div className="kpi-label">Waiting Appraisal</div><div className="kpi-value">{FUNDING_QUEUE.waitingAppraisal}</div></div>
+        <div className="kpi-card"><div className="kpi-label">Broker Follow-Up</div><div className="kpi-value" style={{ color: "var(--amber-500)" }}>{FUNDING_QUEUE.brokerFollowUp ?? 12}</div></div>
+      </div>
+
+      <div className="alert-banner danger" style={{ marginBottom: 16 }}>
+        <strong>Late-Stage Funding Delay Flags:</strong> {LATE_FUNDING_DELAYS.length} deals at risk of missing closing — solicitor, appraisal, or broker blockers.
+      </div>
+
+      <div className="card" style={{ marginBottom: 16 }}>
+        <div style={{ fontWeight: 700, marginBottom: 12 }}>Late-Stage Delay Risk</div>
+        {LATE_FUNDING_DELAYS.map((d) => (
+          <div key={d.file} className="stat-row">
+            <div>
+              <div style={{ fontWeight: 600 }}>{d.file} — {d.borrower}</div>
+              <div style={{ fontSize: 11, color: "var(--muted)" }}>Closing {d.closing} · {d.reason}</div>
+            </div>
+            <span className={`badge ${d.risk === "High" ? "badge-red" : "badge-amber"}`}>{d.risk}</span>
+          </div>
+        ))}
       </div>
 
       <div className="card">

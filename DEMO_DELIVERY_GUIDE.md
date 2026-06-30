@@ -189,7 +189,7 @@ Yeh ek fictional deal hai jo multiple modules mein same rehti hai — client ko 
 |-----------|--------|-------------------|
 | Centralized dashboard | ✅ | KPI grid + hero banner |
 | File status by stage (11 stages) | ✅ | Pipeline bar: new → intake → … → funding ready |
-| Views by broker, brokerage, province, product… | ✅ | Live filter chips + quick filters; pipeline counts update |
+| Views by broker, brokerage, province, product… | ✅ | Filters: broker, brokerage, underwriter, borrower type, deal size, province, product, SLA, stage |
 | Real-time indicators (delay, missing docs, appraisal…) | ✅ | Hero: 45 fast-track, 18 missing income, 9 appraisal, 6 SLA risk |
 | Daily volume & SLA dashboard | ✅ | KPI cards + volume chart |
 | Executive view | ✅ | Same page executive role se + Leadership alag page |
@@ -249,11 +249,11 @@ Yeh ek fictional deal hai jo multiple modules mein same rehti hai — client ko 
 
 | Sub-point | Status | Demo mein kya hai |
 |-----------|--------|-------------------|
-| Product rules engine | ⚠️ | UI comparison table; backend rules engine nahi |
+| Product rules engine | ✅ | Active guidelines v2.4/v3.1 + side-by-side comparison |
 | Borrower profile matching (salaried, self-employed…) | ✅ | Sarah Chen self-employed scenario |
 | AI best product path | ✅ | BFS 88% recommended |
 | Policy-fit confidence score | ✅ | Progress bars per product |
-| Scenario review assistant | ⚠️ | Broker Scenario Desk par alag page |
+| Scenario review assistant | ✅ | Broker Scenario Desk — live `runScenario()` |
 | Submission tips for brokers | ✅ | Bullet list BFS tips |
 | Product exception workflow | ✅ | Request exception button + status badge |
 | Rule versioning | ✅ | BFS v2.4 / Prime v1.8 version table |
@@ -284,7 +284,7 @@ Yeh ek fictional deal hai jo multiple modules mein same rehti hai — client ko 
 | SLA performance | ✅ | Broker SLA % column + chart |
 | Broker quality score | ✅ | Quality badge per broker |
 | Education recommendations | ✅ | Right panel targeted education |
-| High-value broker prioritization | ⚠️ | Implied in quality scores |
+| High-value broker prioritization | ✅ | Platinum/Gold broker prioritization table |
 | New broker onboarding | ✅ | Onboarding pipeline table (3 new brokers) |
 | Regional segmentation | ✅ | Province column |
 | **Demo Moment** (38% missing-doc brokerage) | ✅ | Problem broker + education panel |
@@ -347,7 +347,7 @@ Yeh ek fictional deal hai jo multiple modules mein same rehti hai — client ko 
 | Sub-point | Status | Demo mein kya hai |
 |-----------|--------|-------------------|
 | Appraisal order & status tracking | ✅ | Table: Ordered / In Progress / Delayed / Complete |
-| Appraisal partner integration | ⚠️ | Integrations page par connected status |
+| Appraisal partner integration | ✅ | Integrations table + Appraisal API mapping + live simulate |
 | Property risk scoring (LTV, location…) | ✅ | Risk badges + factor list |
 | Collateral exception detection | ✅ | Valuation exception in KPIs |
 | Appraisal delay alerts | ✅ | Red alert banner HCV-10412 |
@@ -419,7 +419,7 @@ Yeh ek fictional deal hai jo multiple modules mein same rehti hai — client ko 
 | SLA timers per stage | ✅ | SLA days column |
 | Aging by product type | ✅ | Bar chart by product on SLA Queue |
 | Workload balancing | ✅ | UW table with suggestions |
-| Priority routing urgent closings | ⚠️ | Exception queue in Copilot |
+| Priority routing urgent closings | ✅ | Urgent closings table on SLA Queue |
 | Capacity forecast | ✅ | +40% volume KPI |
 | Bottleneck detection (6 stages) | ✅ | All 6 stages in table |
 | Staffing load forecast | ✅ | "+2 UW" KPI |
@@ -446,7 +446,7 @@ Yeh ek fictional deal hai jo multiple modules mein same rehti hai — client ko 
 | Compliance clearance | ✅ | In checklist item |
 | Missing funding item alerts | ✅ | KPI cards |
 | Automated reminders | ✅ | **Send Reminder** button → toast + audit entry |
-| Late-stage funding delay flags | ⚠️ | SLA module overlap |
+| Late-stage funding delay flags | ✅ | Late-stage delay risk panel on Funding |
 | Daily ready-to-fund queue | ✅ | 5 files listed |
 | Funded volume forecast | ✅ | Week/month forecast |
 | **Demo Moment** (60 conditional → 22/17/9/12) | ✅ | Exact KPI numbers |
@@ -467,7 +467,7 @@ Yeh ek fictional deal hai jo multiple modules mein same rehti hai — client ko 
 | Pipeline-to-funding forecast | ✅ | $142M pipeline |
 | Credit-risk distribution | ✅ | Credit tier distribution chart |
 | Concentration exposure alerts | ✅ | Alt-A ON alert banner |
-| Deal quality trends | ⚠️ | Broker intel module |
+| Deal quality trends | ✅ | 6-month quality/rework chart on Portfolio |
 | Early portfolio risk indicators | ✅ | Risk tier column |
 | Capital allocation / investor views | ✅ | Capital allocation table |
 | Scenario modeling | ✅ | Portfolio sliders — rate shock / volume scenario |
@@ -547,7 +547,7 @@ Yeh ek fictional deal hai jo multiple modules mein same rehti hai — client ko 
 | Data mapping | ✅ | Field mapping table (Filogix → HCV) |
 | Sync monitoring & alerts | ✅ | Status + last sync |
 | Event-driven workflow | ✅ | 5-step live simulation timeline |
-| Unified mortgage data model | ⚠️ | Architecture story only |
+| Unified mortgage data model | ✅ | 5-layer unified model on Integrations |
 | **Demo Moment** (Filogix → dashboard auto-update) | ✅ | Event timeline |
 
 **Testing:** Integrations → 6 systems green/syncing → scroll event flow → 5 timestamps.
@@ -600,9 +600,9 @@ Yeh ek fictional deal hai jo multiple modules mein same rehti hai — client ko 
 | Compliance checklist by product/province | ✅ | 4/5 Pass |
 | Policy rule versioning | ✅ | BFS Guidelines v2.4 |
 | Reviewer notes & approval timeline | ✅ | In audit trail |
-| Exception management | ⚠️ | Copilot exception queue |
+| Exception management | ✅ | Exception workflow on Compliance Audit |
 | Role-based access control | ✅ | Middleware + 5 roles |
-| Sensitive data protection | ⚠️ | Demo narrative |
+| Sensitive data protection | ✅ | PIPEDA, masking, RBAC badges |
 | Exportable audit package | ✅ | Export Audit Package → preview modal |
 | **Demo Moment** (every major event on one file) | ✅ | Sarah Chen timeline |
 
@@ -644,12 +644,12 @@ Yeh ek fictional deal hai jo multiple modules mein same rehti hai — client ko 
 | 100 brokerage firms | ✅ | KPI + 8 brokerage names in rotation |
 | 8 active product categories | ✅ | 7 products in `PRODUCTS` array |
 | 6 provinces | ✅ | ON, BC, AB, QC, MB, SK |
-| 25,000 uploaded documents | ⚠️ | Narrative; Integrations events 8420 S3 |
+| 25,000 uploaded documents | ✅ | Intake KPI + Integrations pilot stats |
 | 2,000 appraisal records | ✅ | Property page KPI |
-| 1,500 conditionally approved | ⚠️ | Implied in funding stats |
+| 1,500 conditionally approved | ✅ | Intake KPI + Funding queue stats |
 | 1,000 funded mortgage records | ✅ | Portfolio YTD 1,000 |
 | 12 months history | ✅ | `VOLUME_BY_MONTH` Jul–Jun |
-| 50 underwriter & ops users | ⚠️ | 5 UW names in data; 5 demo users |
+| 50 underwriter & ops users | ✅ | Intake KPI opsUsers: 50 + OPS_USERS list |
 | Broker communication history | ✅ | Communications timeline |
 | Product guideline & checklist library | ✅ | Intake BFS checklist + policy version |
 

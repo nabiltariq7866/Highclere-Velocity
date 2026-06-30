@@ -4,6 +4,7 @@ import { DemoMoment } from "@/components/DemoMoment";
 import { ScoreBadge } from "@/components/StatusBadges";
 import { useDemoState } from "@/context/DemoStateProvider";
 import { GOLDEN_FILE } from "@/data/mockData";
+import { PILOT_DATA_STATS } from "@/data/extendedMockData";
 
 const EXTRACTED = [
   { field: "Stated Annual Income", value: "$142,000", confidence: 96 },
@@ -30,6 +31,13 @@ export function IntakeView() {
       <DemoMoment>
         Filogix + portal + email channels. Duplicate pay stub template flagged cross-file. Checklist syncs when broker uploads.
       </DemoMoment>
+
+      <div className="kpi-grid" style={{ marginBottom: 16 }}>
+        <div className="kpi-card"><div className="kpi-label">Pilot Documents</div><div className="kpi-value">{PILOT_DATA_STATS.totalDocuments.toLocaleString()}</div></div>
+        <div className="kpi-card"><div className="kpi-label">Conditional Approved</div><div className="kpi-value">{PILOT_DATA_STATS.conditionalApproved.toLocaleString()}</div></div>
+        <div className="kpi-card"><div className="kpi-label">Ops & UW Users</div><div className="kpi-value">{PILOT_DATA_STATS.opsUsers}</div></div>
+        <div className="kpi-card"><div className="kpi-label">Appraisal Records</div><div className="kpi-value">{PILOT_DATA_STATS.appraisalRecords.toLocaleString()}</div></div>
+      </div>
 
       <div className="card" style={{ marginBottom: 16 }}>
         <div style={{ fontWeight: 700, marginBottom: 12 }}>Intake Channels — Today</div>

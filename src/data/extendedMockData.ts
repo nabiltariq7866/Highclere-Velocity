@@ -155,6 +155,85 @@ export const INTEGRATION_EVENT_TEMPLATE = [
   { step: "Command Center", msg: "Dashboard updated · File routed to intake · Broker notified" },
 ];
 
+export const DEAL_QUALITY_TRENDS = [
+  { month: "Jan", quality: 71, rework: 14 },
+  { month: "Feb", quality: 72, rework: 13 },
+  { month: "Mar", quality: 73, rework: 12 },
+  { month: "Apr", quality: 74, rework: 11 },
+  { month: "May", quality: 75, rework: 10 },
+  { month: "Jun", quality: 76, rework: 9 },
+];
+
+export const PORTFOLIO_LTV_BANDS = [
+  { band: "<65%", volume: "$28M", share: 18 },
+  { band: "65-75%", volume: "$52M", share: 34 },
+  { band: "75-80%", volume: "$48M", share: 31 },
+  { band: "80%+", volume: "$26M", share: 17 },
+];
+
+export const URGENT_CLOSINGS = [
+  { file: "HCV-2026-10321", borrower: "Michael O'Brien", closing: "Jul 8", daysLeft: 2, priority: "Critical", route: "Diana Cho" },
+  { file: "HCV-2026-10482", borrower: "Sarah Chen", closing: "Jul 18", daysLeft: 5, priority: "High", route: "Karen Mitchell" },
+  { file: "HCV-2026-10345", borrower: "Priya Sharma", closing: "Jul 10", daysLeft: 3, priority: "High", route: "Fast-track queue" },
+];
+
+export const LATE_FUNDING_DELAYS = [
+  { file: "HCV-2026-10378", borrower: "Emma Thompson", closing: "Jul 14", risk: "High", reason: "Solicitor commitment overdue 3 days" },
+  { file: "HCV-2026-10389", borrower: "Robert Singh", closing: "Jul 15", risk: "Medium", reason: "Appraisal delayed — 12 days past ETA" },
+  { file: "HCV-2026-10402", borrower: "Lisa Nakamura", closing: "Jul 16", risk: "Medium", reason: "Broker follow-up — insurance binder missing" },
+];
+
+export const HIGH_VALUE_BROKERS = [
+  { name: "Angela Morrison", brokerage: "Dominion Lending", volume: 186, fundedYtd: "$42M", priority: "Platinum", sla: "98%" },
+  { name: "Raj Patel", brokerage: "Verico Paragon", volume: 164, fundedYtd: "$38M", priority: "Platinum", sla: "96%" },
+  { name: "Sophie Laurent", brokerage: "Mortgage Architects", volume: 142, fundedYtd: "$31M", priority: "Gold", sla: "94%" },
+];
+
+export const BROKER_GROWTH_ALERTS = [
+  { broker: "Prairie Connect (SK)", signal: "Volume +45% MoM — capacity review", type: "Growth" },
+  { broker: "Mark Henderson", signal: "Missing-doc rate 38% — education required", type: "Risk" },
+  { broker: "Atlantic Mortgage Group", signal: "NS onboarding — first submissions expected Aug", type: "Expansion" },
+];
+
+export const ACCOUNT_REP_DASHBOARD = [
+  { rep: "Tom Berger", brokers: 48, volume: 892, issues: 3, topBroker: "Angela Morrison" },
+  { rep: "Lisa Chen", brokers: 52, volume: 756, issues: 7, topBroker: "Raj Patel" },
+  { rep: "Mike Sullivan", brokers: 41, volume: 612, issues: 2, topBroker: "Sophie Laurent" },
+];
+
+export const BROKER_PRODUCT_SEGMENTATION = [
+  { segment: "Prime / Insurable", brokers: 312, volume: "62%", trend: "+4%" },
+  { segment: "Alt-A", brokers: 98, volume: "18%", trend: "+12%" },
+  { segment: "Business-for-Self", brokers: 76, volume: "14%", trend: "+8%" },
+  { segment: "Transfer / Switch", brokers: 64, volume: "6%", trend: "+2%" },
+];
+
+export const FRAUD_EXTENDED_SIGNALS = [
+  { type: "Property flipping risk", file: "HCV-2026-10433", detail: "3 purchases same building in 18 months", severity: "High" },
+  { type: "Synthetic profile indicator", file: "HCV-2026-10467", detail: "Thin-file credit + new employer < 90 days", severity: "Medium" },
+  { type: "Repeated employer irregularity", file: "HCV-2026-10455", detail: "Same employer on 4 unrelated borrowers", severity: "High" },
+];
+
+export const UNIFIED_DATA_LAYERS = [
+  { layer: "Submission", entities: "Application, Borrower, Broker", sources: "Filogix, Portal, Email" },
+  { layer: "Documents", entities: "Files, Extractions, Checklists", sources: "S3, OCR pipeline" },
+  { layer: "Risk", entities: "Scores, Ratios, Fraud flags", sources: "Equifax, AI models" },
+  { layer: "Collateral", entities: "Property, Appraisal, LTV", sources: "Appraisal API" },
+  { layer: "Workflow", entities: "Stages, Conditions, SLA", sources: "Internal HCV engine" },
+];
+
+export const BROKER_COMM_TIMELINE = [
+  { time: "Jun 28 09:45", event: "Missing document request sent — bank statements, T1", from: "Highclere Ops" },
+  { time: "Jun 29 14:20", event: "Reminder: 3 conditions due Jul 5", from: "Automated" },
+  { time: "Jun 30 10:00", event: "Sarah Chen file — income variance explanation requested", from: "Karen Mitchell" },
+];
+
+export const BROKER_EDUCATION_TIPS = [
+  "BFS files: include 90-day business bank statements before submit",
+  "Alt-A: alternative income docs must match NOA within 15%",
+  "Prime: employment letter dated within 30 days of application",
+];
+
 export function getCommTemplate(product: ProductType, file: string, items: string, due: string) {
   const t = COMM_TEMPLATES[product] ?? COMM_TEMPLATES.Prime;
   return t.replace("{file}", file).replace("{items}", items).replace("{due}", due);

@@ -4,6 +4,7 @@ import { DemoMoment } from "@/components/DemoMoment";
 import { ExportButton } from "@/components/ExportButton";
 import { useDemoState } from "@/context/DemoStateProvider";
 import { GOLDEN_FILE } from "@/data/mockData";
+import { PRODUCT_EXCEPTIONS } from "@/data/extendedMockData";
 
 export function ComplianceAuditView() {
   const { auditLog, uwDecision, conditions, qualityScore } = useDemoState();
@@ -60,10 +61,26 @@ export function ComplianceAuditView() {
       </div>
 
       <div className="card" style={{ marginTop: 16 }}>
+        <div style={{ fontWeight: 700, marginBottom: 12 }}>Exception Management Workflow</div>
+        {PRODUCT_EXCEPTIONS.map((e) => (
+          <div key={e.id} className="stat-row">
+            <div>
+              <div style={{ fontWeight: 600 }}>{e.file}</div>
+              <div style={{ fontSize: 11, color: "var(--muted)" }}>{e.type} · {e.requestedBy}</div>
+            </div>
+            <span className={`badge ${e.status === "Approved" ? "badge-green" : "badge-amber"}`}>{e.status}</span>
+          </div>
+        ))}
+      </div>
+
+      <div className="card" style={{ marginTop: 16 }}>
         <div style={{ fontWeight: 700, marginBottom: 8 }}>Sensitive Data & RBAC</div>
-        <p style={{ fontSize: 13, margin: 0 }}>
-          Role-based access enforced via middleware — 5 demo personas. Document access logged (12 events).
-          PIPEDA-aligned retention policy simulated — borrower data masked in broker-facing views.
+        <div className="stat-row"><span>PIPEDA retention policy</span><span className="badge badge-green">Active</span></div>
+        <div className="stat-row"><span>Borrower data masking (broker views)</span><span className="badge badge-green">Enabled</span></div>
+        <div className="stat-row"><span>Document access logging</span><span className="badge badge-green">12 events</span></div>
+        <div className="stat-row"><span>Role-based access (5 personas)</span><span className="badge badge-green">Middleware enforced</span></div>
+        <p style={{ fontSize: 13, margin: "12px 0 0" }}>
+          Regulated lending environment — every AI score, override, and document access is auditable and exportable.
         </p>
       </div>
     </>

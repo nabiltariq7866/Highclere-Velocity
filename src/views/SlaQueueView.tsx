@@ -2,7 +2,7 @@
 
 import { DemoMoment } from "@/components/DemoMoment";
 import { useDemoState } from "@/context/DemoStateProvider";
-import { SLA_AGING_BY_PRODUCT } from "@/data/extendedMockData";
+import { SLA_AGING_BY_PRODUCT, URGENT_CLOSINGS } from "@/data/extendedMockData";
 import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 
 const UNDERWRITERS = [
@@ -27,6 +27,27 @@ export function SlaQueueView() {
 
       <div className="alert-banner">
         <strong>Capacity Alert:</strong> Underwriting 112%. Recommend shifting 6 Prime fast-track files to Diana Cho.
+      </div>
+
+      <div className="card" style={{ marginBottom: 16 }}>
+        <div style={{ fontWeight: 700, marginBottom: 12 }}>Priority Routing — Urgent Closings</div>
+        <table className="data-table">
+          <thead>
+            <tr><th>File</th><th>Borrower</th><th>Closing</th><th>Days Left</th><th>Priority</th><th>Route To</th></tr>
+          </thead>
+          <tbody>
+            {URGENT_CLOSINGS.map((u) => (
+              <tr key={u.file}>
+                <td style={{ fontWeight: 600 }}>{u.file}</td>
+                <td>{u.borrower}</td>
+                <td>{u.closing}</td>
+                <td>{u.daysLeft}</td>
+                <td><span className={`badge ${u.priority === "Critical" ? "badge-red" : "badge-amber"}`}>{u.priority}</span></td>
+                <td>{u.route}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
 
       <div className="card" style={{ marginBottom: 16 }}>

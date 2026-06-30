@@ -2,9 +2,9 @@
 
 import { useMemo, useState } from "react";
 import { DemoMoment } from "@/components/DemoMoment";
-import { CAPITAL_ALLOCATION, CREDIT_TIER_DIST } from "@/data/extendedMockData";
+import { CAPITAL_ALLOCATION, CREDIT_TIER_DIST, DEAL_QUALITY_TRENDS, PORTFOLIO_LTV_BANDS } from "@/data/extendedMockData";
 import { PRODUCT_MIX, VOLUME_BY_MONTH } from "@/data/mockData";
-import { Bar, BarChart, CartesianGrid, Cell, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import { Bar, BarChart, CartesianGrid, Cell, Line, LineChart, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 
 const COLORS = ["#1bd488", "#055b65", "#45828b", "#9ab5b1", "#2f5f66"];
 
@@ -53,6 +53,31 @@ export function PortfolioView() {
               <Tooltip />
             </PieChart>
           </ResponsiveContainer>
+        </div>
+      </div>
+
+      <div className="grid-2" style={{ marginTop: 16 }}>
+        <div className="card">
+          <div style={{ fontWeight: 700, marginBottom: 12 }}>Deal Quality Trends (6 mo)</div>
+          <ResponsiveContainer width="100%" height={200}>
+            <LineChart data={DEAL_QUALITY_TRENDS}>
+              <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
+              <XAxis dataKey="month" tick={{ fontSize: 11 }} />
+              <YAxis tick={{ fontSize: 11 }} />
+              <Tooltip />
+              <Line type="monotone" dataKey="quality" stroke="var(--accent)" name="Quality score" />
+              <Line type="monotone" dataKey="rework" stroke="var(--amber-500)" name="Rework %" />
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
+        <div className="card">
+          <div style={{ fontWeight: 700, marginBottom: 12 }}>Portfolio by LTV Band</div>
+          {PORTFOLIO_LTV_BANDS.map((b) => (
+            <div key={b.band} className="stat-row">
+              <span>{b.band}</span>
+              <span><strong>{b.volume}</strong> · {b.share}%</span>
+            </div>
+          ))}
         </div>
       </div>
 
