@@ -2,9 +2,15 @@ import type { SessionUser } from "@/lib/types";
 
 export type { SessionUser };
 
+const cookieFlags = () => {
+  const secure = typeof window !== "undefined" && window.location.protocol === "https:" ? "; Secure" : "";
+  return `; path=/; max-age=86400; SameSite=Lax${secure}`;
+};
+
 export const setSessionCookies = (user: SessionUser) => {
-  document.cookie = `hcv_session=mock_jwt; path=/; max-age=86400`;
-  document.cookie = `hcv_role=${user.role}; path=/; max-age=86400`;
+  const flags = cookieFlags();
+  document.cookie = `hcv_session=mock_jwt${flags}`;
+  document.cookie = `hcv_role=${user.role}${flags}`;
 };
 
 export const clearSessionCookies = () => {

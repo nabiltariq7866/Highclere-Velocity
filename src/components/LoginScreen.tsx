@@ -1,7 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { useEffect, useState, useTransition } from "react";
+import { useState } from "react";
 import { NavIcon } from "@/components/NavIcon";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { DEMO_USERS } from "@/data/demoUsers";
@@ -16,22 +15,13 @@ const ROLE_DESCRIPTIONS: Record<string, string> = {
 };
 
 export function LoginScreen() {
-  const router = useRouter();
   const [loading, setLoading] = useState<string | null>(null);
-  const [, startTransition] = useTransition();
-
-  useEffect(() => {
-    DEMO_USERS.forEach((user) => {
-      router.prefetch(user.redirectTo);
-    });
-  }, [router]);
 
   const handleLogin = (user: (typeof DEMO_USERS)[0]) => {
     setLoading(user.id);
     setSessionCookies(user);
-    startTransition(() => {
-      router.replace(user.redirectTo);
-    });
+    // Full navigation so middleware sees fresh cookies (prefetch-before-auth breaks on Vercel).
+    window.location.assign(user.redirectTo);
   };
 
   return (
@@ -120,7 +110,6 @@ export function LoginScreen() {
                   opacity: loading && loading !== user.id ? 0.6 : 1,
                 }}
                 onMouseEnter={(e) => {
-                  router.prefetch(user.redirectTo);
                   e.currentTarget.style.borderColor = "var(--accent)";
                 }}
                 onMouseLeave={(e) => {
