@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { CustomDropdown } from "@/components/CustomDropdown";
 import { DemoMoment } from "@/components/DemoMoment";
 import { UploadSimulator } from "@/components/UploadSimulator";
 import { ScoreBadge, StageBadge, formatCurrency } from "@/components/StatusBadges";
@@ -183,44 +184,37 @@ export function BrokerScenarioView() {
       <div className="card">
         <div className="grid-2" style={{ marginBottom: 0 }}>
           <div>
-            <label style={{ fontSize: 12, fontWeight: 600, display: "block", marginBottom: 6 }}>Borrower Type</label>
-            <select
-              className="top-bar-search"
-              style={{ width: "100%" }}
+            <CustomDropdown
+              label="Borrower Type"
               value={borrowerType}
-              onChange={(e) => { setBorrowerType(e.target.value as BorrowerType); setRan(false); }}
-            >
-              <option value="salaried">Salaried</option>
-              <option value="bfs">Self-Employed (BFS)</option>
-              <option value="new-se">Newly Self-Employed</option>
-              <option value="commission">Commission / Variable</option>
-            </select>
+              onChange={(v) => { setBorrowerType(v as BorrowerType); setRan(false); }}
+              options={[
+                { value: "salaried", label: "Salaried" },
+                { value: "bfs", label: "Self-Employed (BFS)" },
+                { value: "new-se", label: "Newly Self-Employed" },
+                { value: "commission", label: "Commission / Variable" },
+              ]}
+            />
           </div>
           <div>
-            <label style={{ fontSize: 12, fontWeight: 600, display: "block", marginBottom: 6 }}>Transaction</label>
-            <select
-              className="top-bar-search"
-              style={{ width: "100%" }}
+            <CustomDropdown
+              label="Transaction"
               value={transactionType}
-              onChange={(e) => { setTransactionType(e.target.value as TransactionType); setRan(false); }}
-            >
-              <option value="purchase">Purchase</option>
-              <option value="refinance">Refinance</option>
-              <option value="transfer">Transfer / Switch</option>
-            </select>
+              onChange={(v) => { setTransactionType(v as TransactionType); setRan(false); }}
+              options={[
+                { value: "purchase", label: "Purchase" },
+                { value: "refinance", label: "Refinance" },
+                { value: "transfer", label: "Transfer / Switch" },
+              ]}
+            />
           </div>
           <div>
-            <label style={{ fontSize: 12, fontWeight: 600, display: "block", marginBottom: 6 }}>Province</label>
-            <select
-              className="top-bar-search"
-              style={{ width: "100%" }}
+            <CustomDropdown
+              label="Province"
               value={province}
-              onChange={(e) => { setProvince(e.target.value as Province); setRan(false); }}
-            >
-              {PROVINCES.map((p) => (
-                <option key={p} value={p}>{p}</option>
-              ))}
-            </select>
+              onChange={(v) => { setProvince(v as Province); setRan(false); }}
+              options={PROVINCES.map((p) => ({ value: p, label: p }))}
+            />
           </div>
           <div>
             <label style={{ fontSize: 12, fontWeight: 600, display: "block", marginBottom: 6 }}>

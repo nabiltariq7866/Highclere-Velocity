@@ -1,5 +1,6 @@
 "use client";
 
+import { CustomDropdown } from "@/components/CustomDropdown";
 import { DemoMoment } from "@/components/DemoMoment";
 import { useDemoState } from "@/context/DemoStateProvider";
 import { GOLDEN_FILE } from "@/data/mockData";
@@ -69,16 +70,12 @@ export function CommunicationsView() {
 
       <div className="card" style={{ marginTop: 16 }}>
         <div style={{ fontWeight: 700, marginBottom: 8 }}>Communication Template by Product</div>
-        <select
-          className="top-bar-search"
-          style={{ width: "100%", marginBottom: 12 }}
+        <CustomDropdown
           value={commTemplateProduct}
-          onChange={(e) => setCommTemplateProduct(e.target.value)}
-        >
-          {Object.keys(COMM_TEMPLATES).map((p) => (
-            <option key={p} value={p}>{p}</option>
-          ))}
-        </select>
+          onChange={setCommTemplateProduct}
+          options={Object.keys(COMM_TEMPLATES).map((p) => ({ value: p, label: p }))}
+          style={{ marginBottom: 12 }}
+        />
         <div className="ai-panel" style={{ fontSize: 13 }}>{templatePreview}</div>
       </div>
 

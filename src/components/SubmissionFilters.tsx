@@ -1,5 +1,6 @@
 "use client";
 
+import { CustomDropdown } from "@/components/CustomDropdown";
 import type { SubmissionFilters } from "@/lib/filterSubmissions";
 import { DEFAULT_FILTERS } from "@/lib/filterSubmissions";
 import { PRODUCTS, PROVINCES, STAGE_LABELS } from "@/lib/types";
@@ -21,6 +22,27 @@ const STAGE_OPTIONS: FileStage[] = [
   "conditional_approval",
   "appraisal_pending",
   "funding_ready",
+];
+
+const BORROWER_TYPE_OPTIONS = [
+  { value: "all", label: "All types" },
+  { value: "salaried", label: "Salaried" },
+  { value: "self_employed", label: "Self-Employed / BFS" },
+  { value: "other", label: "Other income" },
+];
+
+const DEAL_SIZE_OPTIONS = [
+  { value: "all", label: "All sizes" },
+  { value: "under_500k", label: "Under $500K" },
+  { value: "500k_750k", label: "$500K – $750K" },
+  { value: "over_750k", label: "Over $750K" },
+];
+
+const SLA_OPTIONS = [
+  { value: "all", label: "All SLA" },
+  { value: "on_track", label: "On Track" },
+  { value: "at_risk", label: "At Risk" },
+  { value: "breached", label: "Breached" },
 ];
 
 export function SubmissionFiltersBar({
@@ -72,132 +94,66 @@ export function SubmissionFiltersBar({
           marginTop: 12,
         }}
       >
-        <div>
-          <label style={{ fontSize: 10, fontWeight: 700, color: "var(--muted)", textTransform: "uppercase" }}>Province</label>
-          <select
-            className="top-bar-search"
-            style={{ width: "100%", marginTop: 4 }}
-            value={filters.province}
-            onChange={(e) => set({ province: e.target.value as SubmissionFilters["province"] })}
-          >
-            <option value="all">All provinces</option>
-            {PROVINCES.map((p) => (
-              <option key={p} value={p}>{p}</option>
-            ))}
-          </select>
-        </div>
-        <div>
-          <label style={{ fontSize: 10, fontWeight: 700, color: "var(--muted)", textTransform: "uppercase" }}>Product</label>
-          <select
-            className="top-bar-search"
-            style={{ width: "100%", marginTop: 4 }}
-            value={filters.product}
-            onChange={(e) => set({ product: e.target.value as SubmissionFilters["product"] })}
-          >
-            <option value="all">All products</option>
-            {PRODUCTS.map((p) => (
-              <option key={p} value={p}>{p}</option>
-            ))}
-          </select>
-        </div>
-        <div>
-          <label style={{ fontSize: 10, fontWeight: 700, color: "var(--muted)", textTransform: "uppercase" }}>Broker</label>
-          <select
-            className="top-bar-search"
-            style={{ width: "100%", marginTop: 4 }}
-            value={filters.broker}
-            onChange={(e) => set({ broker: e.target.value })}
-          >
-            <option value="">All brokers</option>
-            {brokers.map((b) => (
-              <option key={b} value={b}>{b}</option>
-            ))}
-          </select>
-        </div>
-        <div>
-          <label style={{ fontSize: 10, fontWeight: 700, color: "var(--muted)", textTransform: "uppercase" }}>Brokerage</label>
-          <select
-            className="top-bar-search"
-            style={{ width: "100%", marginTop: 4 }}
-            value={filters.brokerage}
-            onChange={(e) => set({ brokerage: e.target.value })}
-          >
-            <option value="">All brokerages</option>
-            {brokerages.map((b) => (
-              <option key={b} value={b}>{b}</option>
-            ))}
-          </select>
-        </div>
-        <div>
-          <label style={{ fontSize: 10, fontWeight: 700, color: "var(--muted)", textTransform: "uppercase" }}>Underwriter</label>
-          <select
-            className="top-bar-search"
-            style={{ width: "100%", marginTop: 4 }}
-            value={filters.underwriter}
-            onChange={(e) => set({ underwriter: e.target.value })}
-          >
-            <option value="">All underwriters</option>
-            {underwriters.map((u) => (
-              <option key={u} value={u}>{u}</option>
-            ))}
-          </select>
-        </div>
-        <div>
-          <label style={{ fontSize: 10, fontWeight: 700, color: "var(--muted)", textTransform: "uppercase" }}>Borrower Type</label>
-          <select
-            className="top-bar-search"
-            style={{ width: "100%", marginTop: 4 }}
-            value={filters.borrowerType}
-            onChange={(e) => set({ borrowerType: e.target.value as SubmissionFilters["borrowerType"] })}
-          >
-            <option value="all">All types</option>
-            <option value="salaried">Salaried</option>
-            <option value="self_employed">Self-Employed / BFS</option>
-            <option value="other">Other income</option>
-          </select>
-        </div>
-        <div>
-          <label style={{ fontSize: 10, fontWeight: 700, color: "var(--muted)", textTransform: "uppercase" }}>Deal Size</label>
-          <select
-            className="top-bar-search"
-            style={{ width: "100%", marginTop: 4 }}
-            value={filters.dealSize}
-            onChange={(e) => set({ dealSize: e.target.value as SubmissionFilters["dealSize"] })}
-          >
-            <option value="all">All sizes</option>
-            <option value="under_500k">Under $500K</option>
-            <option value="500k_750k">$500K – $750K</option>
-            <option value="over_750k">Over $750K</option>
-          </select>
-        </div>
-        <div>
-          <label style={{ fontSize: 10, fontWeight: 700, color: "var(--muted)", textTransform: "uppercase" }}>SLA</label>
-          <select
-            className="top-bar-search"
-            style={{ width: "100%", marginTop: 4 }}
-            value={filters.slaStatus}
-            onChange={(e) => set({ slaStatus: e.target.value as SubmissionFilters["slaStatus"] })}
-          >
-            <option value="all">All SLA</option>
-            <option value="on_track">On Track</option>
-            <option value="at_risk">At Risk</option>
-            <option value="breached">Breached</option>
-          </select>
-        </div>
-        <div>
-          <label style={{ fontSize: 10, fontWeight: 700, color: "var(--muted)", textTransform: "uppercase" }}>Stage</label>
-          <select
-            className="top-bar-search"
-            style={{ width: "100%", marginTop: 4 }}
-            value={filters.stage}
-            onChange={(e) => set({ stage: e.target.value as SubmissionFilters["stage"] })}
-          >
-            <option value="all">All stages</option>
-            {STAGE_OPTIONS.map((s) => (
-              <option key={s} value={s}>{STAGE_LABELS[s]}</option>
-            ))}
-          </select>
-        </div>
+        <CustomDropdown
+          label="Province"
+          value={filters.province}
+          onChange={(v) => set({ province: v as SubmissionFilters["province"] })}
+          options={[{ value: "all", label: "All provinces" }, ...PROVINCES.map((p) => ({ value: p, label: p }))]}
+        />
+        <CustomDropdown
+          label="Product"
+          value={filters.product}
+          onChange={(v) => set({ product: v as SubmissionFilters["product"] })}
+          options={[{ value: "all", label: "All products" }, ...PRODUCTS.map((p) => ({ value: p, label: p }))]}
+        />
+        <CustomDropdown
+          label="Broker"
+          value={filters.broker}
+          onChange={(v) => set({ broker: v })}
+          placeholder="All brokers"
+          options={[{ value: "", label: "All brokers" }, ...brokers.map((b) => ({ value: b, label: b }))]}
+        />
+        <CustomDropdown
+          label="Brokerage"
+          value={filters.brokerage}
+          onChange={(v) => set({ brokerage: v })}
+          placeholder="All brokerages"
+          options={[{ value: "", label: "All brokerages" }, ...brokerages.map((b) => ({ value: b, label: b }))]}
+        />
+        <CustomDropdown
+          label="Underwriter"
+          value={filters.underwriter}
+          onChange={(v) => set({ underwriter: v })}
+          placeholder="All underwriters"
+          options={[{ value: "", label: "All underwriters" }, ...underwriters.map((u) => ({ value: u, label: u }))]}
+        />
+        <CustomDropdown
+          label="Borrower Type"
+          value={filters.borrowerType}
+          onChange={(v) => set({ borrowerType: v as SubmissionFilters["borrowerType"] })}
+          options={BORROWER_TYPE_OPTIONS}
+        />
+        <CustomDropdown
+          label="Deal Size"
+          value={filters.dealSize}
+          onChange={(v) => set({ dealSize: v as SubmissionFilters["dealSize"] })}
+          options={DEAL_SIZE_OPTIONS}
+        />
+        <CustomDropdown
+          label="SLA"
+          value={filters.slaStatus}
+          onChange={(v) => set({ slaStatus: v as SubmissionFilters["slaStatus"] })}
+          options={SLA_OPTIONS}
+        />
+        <CustomDropdown
+          label="Stage"
+          value={filters.stage}
+          onChange={(v) => set({ stage: v as SubmissionFilters["stage"] })}
+          options={[
+            { value: "all", label: "All stages" },
+            ...STAGE_OPTIONS.map((s) => ({ value: s, label: STAGE_LABELS[s] })),
+          ]}
+        />
       </div>
 
       {(filters.province !== "all" ||

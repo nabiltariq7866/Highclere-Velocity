@@ -1,5 +1,6 @@
 "use client";
 
+import { CustomDropdown } from "@/components/CustomDropdown";
 import { useCallback, useState } from "react";
 import { useDemoState } from "@/context/DemoStateProvider";
 
@@ -114,17 +115,13 @@ export function UploadSimulator({
 
         {phase === "idle" && (
           <>
-            <label style={{ fontSize: 12, fontWeight: 600, display: "block", marginBottom: 6 }}>Document type</label>
-            <select
-              className="top-bar-search"
-              style={{ width: "100%", marginBottom: 16 }}
+            <CustomDropdown
+              label="Document type"
               value={selected}
-              onChange={(e) => setSelected(e.target.value)}
-            >
-              {targets.map((t) => (
-                <option key={t.checklistId} value={t.checklistId}>{t.label}</option>
-              ))}
-            </select>
+              onChange={setSelected}
+              options={targets.map((t) => ({ value: t.checklistId, label: t.label }))}
+              style={{ marginBottom: 16 }}
+            />
 
             <div
               onDragOver={(e) => e.preventDefault()}
