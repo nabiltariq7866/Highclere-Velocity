@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useMemo, useState } from "react";
 import { CustomDropdown } from "@/components/CustomDropdown";
 import { DemoMoment } from "@/components/DemoMoment";
@@ -68,7 +69,9 @@ export function BrokerPortalView() {
           <button type="button" className="btn-primary" onClick={() => setUploadOpen(true)}>
             Upload Documents
           </button>
-          <button type="button" className="btn-secondary">View Conditions</button>
+          <Link href="/broker/conditions" className="btn-secondary" style={{ textDecoration: "none" }}>
+            View Conditions
+          </Link>
         </div>
       </div>
 
