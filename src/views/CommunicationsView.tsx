@@ -1,15 +1,10 @@
 "use client";
 
 import { DemoMoment } from "@/components/DemoMoment";
+import { useDemoState } from "@/context/DemoStateProvider";
 import { GOLDEN_FILE } from "@/data/mockData";
-
-const CONDITIONS = [
-  { id: 1, item: "Updated business bank statements (90 days)", due: "2026-07-05", status: "Outstanding" },
-  { id: 2, item: "T1 General 2024 — all schedules", due: "2026-07-05", status: "Outstanding" },
-  { id: 3, item: "Letter of explanation — income variance", due: "2026-07-08", status: "Outstanding" },
-  { id: 4, item: "Signed disclosure statement", due: "2026-07-02", status: "Received" },
-  { id: 5, item: "Fire insurance binder", due: "2026-07-12", status: "Outstanding" },
-];
+import { COMM_TEMPLATES, getCommTemplate } from "@/data/extendedMockData";
+import type { ProductType } from "@/lib/types";
 
 const TIMELINE = [
   { time: "Jun 28, 09:18", msg: "Missing document request sent to Angela Morrison", type: "system" },
@@ -19,35 +14,43 @@ const TIMELINE = [
 ];
 
 export function CommunicationsView() {
+  const { conditions, markConditionReceived, commTemplateProduct, setCommTemplateProduct } = useDemoState();
+  const outstanding = conditions.filter((c) => c.status === "outstanding");
+  const templatePreview = getCommTemplate(
+    commTemplateProduct as ProductType,
+    GOLDEN_FILE.fileNumber,
+    outstanding.map((c) => c.item).join(", ") || "none",
+    "July 5"
+  );
+
   return (
     <>
       <h1 className="page-title">Broker Communication & Conditions</h1>
-      <p className="page-subtitle">Automated updates, condition tracking, smart reminders & escalation</p>
+      <p className="page-subtitle">Product templates, condition tracker, reminders — mark received to update file</p>
 
       <DemoMoment>
-        Conditional approval with 5 outstanding items — platform generated clean broker-facing list,
-        sent reminders as deadlines approach, and will escalate only unresolved issues to the team.
+        5 conditional items — switch product template, mark conditions received, view broker timeline and escalation path.
       </DemoMoment>
 
       <div className="grid-2">
         <div className="card">
           <div style={{ fontWeight: 700, marginBottom: 12 }}>File {GOLDEN_FILE.fileNumber}</div>
-          <div style={{ fontSize: 12, color: "var(--muted)", marginBottom: 16 }}>
-            {GOLDEN_FILE.borrower} · Conditional Approval · Closing {GOLDEN_FILE.closingDate}
-          </div>
-          {CONDITIONS.map((c) => (
+          {conditions.map((c) => (
             <div key={c.id} className="stat-row">
               <div>
                 <div style={{ fontSize: 13 }}>{c.item}</div>
                 <div style={{ fontSize: 11, color: "var(--muted)" }}>Due {c.due}</div>
               </div>
-              <span className={`badge ${c.status === "Received" ? "badge-green" : "badge-amber"}`}>
-                {c.status}
-              </span>
+              {c.status === "received" ? (
+                <span className="badge badge-green">Received</span>
+              ) : (
+                <button type="button" className="btn-secondary" style={{ padding: "4px 10px", fontSize: 11 }} onClick={() => markConditionReceived(c.id)}>
+                  Mark Received
+                </button>
+              )}
             </div>
           ))}
         </div>
-
         <div className="card">
           <div style={{ fontWeight: 700, marginBottom: 12 }}>Communication Timeline</div>
           <div className="timeline">
@@ -64,12 +67,26 @@ export function CommunicationsView() {
         </div>
       </div>
 
-      <div className="ai-panel" style={{ marginTop: 16 }}>
-        <div style={{ fontWeight: 700, marginBottom: 8 }}>AI-Generated Broker Update (Preview)</div>
+      <div className="card" style={{ marginTop: 16 }}>
+        <div style={{ fontWeight: 700, marginBottom: 8 }}>Communication Template by Product</div>
+        <select
+          className="top-bar-search"
+          style={{ width: "100%", marginBottom: 12 }}
+          value={commTemplateProduct}
+          onChange={(e) => setCommTemplateProduct(e.target.value)}
+        >
+          {Object.keys(COMM_TEMPLATES).map((p) => (
+            <option key={p} value={p}>{p}</option>
+          ))}
+        </select>
+        <div className="ai-panel" style={{ fontSize: 13 }}>{templatePreview}</div>
+      </div>
+
+      <div className="card" style={{ marginTop: 16 }}>
+        <div style={{ fontWeight: 700, marginBottom: 8 }}>Internal Summary — Account Rep / Underwriter</div>
         <p style={{ fontSize: 13, margin: 0, lineHeight: 1.6 }}>
-          Hi Angela — File {GOLDEN_FILE.fileNumber} has <strong>4 outstanding conditions</strong> before
-          funding. Priority items due July 5: business bank statements and T1 General. Disclosure received —
-          thank you. Reply in portal or upload directly. Escalation to account rep scheduled if not received by July 6.
+          {GOLDEN_FILE.fileNumber}: {outstanding.length} conditions outstanding. Broker Angela Morrison responsive.
+          Income variance unresolved. UW recommendation: conditional approval after bank statements. Escalation July 6 if not received.
         </p>
       </div>
     </>

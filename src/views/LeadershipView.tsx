@@ -1,61 +1,62 @@
 "use client";
 
 import { DemoMoment } from "@/components/DemoMoment";
+import { ExportButton } from "@/components/ExportButton";
 import { COMMAND_CENTER_STATS, VOLUME_BY_MONTH } from "@/data/mockData";
 import { Line, LineChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+
+const BOARD_REPORT = `HIGHCLERE VELOCITY — WEEKLY EXECUTIVE REPORT
+Week of June 23–30, 2026
+
+VOLUME & CONVERSION
+- Total submissions (12 mo): ${COMMAND_CENTER_STATS.totalSubmissions.toLocaleString()}
+- Approval rate: 84.2%
+- Funded this month: ${COMMAND_CENTER_STATS.fundedThisMonth}
+- Broker conversion: 78.4%
+- Avg time to decision: ${COMMAND_CENTER_STATS.avgDecisionHours}h
+- Avg time to funding: 12.4d
+
+BOTTLENECKS
+- Underwriting capacity at 112% — recommend +2 underwriters
+- Appraisal delay rate: 4.8%
+- Alt-A concentration Ontario: +24% MoM
+
+TOP ACTIONS
+1. Add underwriters to Ontario queue
+2. Broker education — Dominion Lending missing docs
+3. Portfolio review — Alt-A ON concentration
+4. Appraisal vendor SLA renegotiation
+5. NS province launch — 2 compliance tasks
+
+FUNDING FORECAST
+- Next week: $31.2M · Month end: $112M pipeline`;
 
 export function LeadershipView() {
   return (
     <>
       <h1 className="page-title">AI Leadership Dashboard</h1>
-      <p className="page-subtitle">Executive KPIs, forecasts, bottlenecks & weekly operational intelligence</p>
+      <p className="page-subtitle">Executive KPIs, broker conversion, exportable board report</p>
 
       <DemoMoment>
-        Weekly leadership report: volume growth, underwriting bottlenecks, broker quality trends, funded-volume
-        forecast, and top operational actions to protect service levels.
+        Weekly leadership intelligence — export generates downloadable board report (demo).
       </DemoMoment>
 
       <div className="hero-banner">
-        <div className="hero-banner-title" style={{ fontSize: 20, fontWeight: 800, marginBottom: 8 }}>
-          Week of June 23–30, 2026 — Executive Summary
-        </div>
-        <div className="hero-banner-muted" style={{ fontSize: 13, lineHeight: 1.6 }}>
-          Submissions up 18% YoY. Underwriting capacity at 112% — recommend 2 additional underwriters.
-          Broker missing-doc rate improved 4%. Alt-A concentration in ON requires review.
-        </div>
+        <div className="hero-banner-title" style={{ fontSize: 20, fontWeight: 800 }}>Week of June 23–30, 2026</div>
+        <div className="hero-banner-muted" style={{ fontSize: 13 }}>Volume up 18% YoY · Underwriting at capacity · Alt-A ON review required</div>
       </div>
 
       <div className="kpi-grid">
-        <div className="kpi-card">
-          <div className="kpi-label">Total Submissions</div>
-          <div className="kpi-value">{COMMAND_CENTER_STATS.totalSubmissions.toLocaleString()}</div>
-          <div className="kpi-trend up">↑ 18% YoY</div>
-        </div>
-        <div className="kpi-card">
-          <div className="kpi-label">Approval Rate</div>
-          <div className="kpi-value">84.2%</div>
-        </div>
-        <div className="kpi-card">
-          <div className="kpi-label">Avg Time to Decision</div>
-          <div className="kpi-value">{COMMAND_CENTER_STATS.avgDecisionHours}h</div>
-        </div>
-        <div className="kpi-card">
-          <div className="kpi-label">Avg Time to Funding</div>
-          <div className="kpi-value">12.4d</div>
-        </div>
-        <div className="kpi-card">
-          <div className="kpi-label">File Quality Score</div>
-          <div className="kpi-value">74</div>
-        </div>
-        <div className="kpi-card">
-          <div className="kpi-label">Appraisal Delay Rate</div>
-          <div className="kpi-value">4.8%</div>
-        </div>
+        <div className="kpi-card"><div className="kpi-label">Total Submissions</div><div className="kpi-value">{COMMAND_CENTER_STATS.totalSubmissions.toLocaleString()}</div></div>
+        <div className="kpi-card"><div className="kpi-label">Approval Rate</div><div className="kpi-value">84.2%</div></div>
+        <div className="kpi-card"><div className="kpi-label">Broker Conversion</div><div className="kpi-value">78.4%</div></div>
+        <div className="kpi-card"><div className="kpi-label">File Quality Score</div><div className="kpi-value">74</div></div>
+        <div className="kpi-card"><div className="kpi-label">Time to Decision</div><div className="kpi-value">{COMMAND_CENTER_STATS.avgDecisionHours}h</div></div>
+        <div className="kpi-card"><div className="kpi-label">Appraisal Delay Rate</div><div className="kpi-value">4.8%</div></div>
       </div>
 
       <div className="grid-2">
         <div className="card">
-          <div style={{ fontWeight: 700, marginBottom: 12 }}>Approval & Funding Trend</div>
           <ResponsiveContainer width="100%" height={220}>
             <LineChart data={VOLUME_BY_MONTH}>
               <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
@@ -67,35 +68,18 @@ export function LeadershipView() {
             </LineChart>
           </ResponsiveContainer>
         </div>
-
         <div className="card">
           <div style={{ fontWeight: 700, marginBottom: 12 }}>Top Operational Actions</div>
-          {[
-            { action: "Add 2 underwriters to Ontario queue", priority: "High" },
-            { action: "Broker education — Dominion Lending missing docs", priority: "Medium" },
-            { action: "Portfolio review — Alt-A ON concentration", priority: "High" },
-            { action: "Appraisal vendor SLA renegotiation", priority: "Medium" },
-            { action: "NS province launch — complete 2 compliance tasks", priority: "Low" },
-          ].map((a) => (
-            <div key={a.action} className="stat-row">
-              <span style={{ fontSize: 13 }}>{a.action}</span>
-              <span className={`badge ${a.priority === "High" ? "badge-red" : a.priority === "Medium" ? "badge-amber" : "badge-blue"}`}>
-                {a.priority}
-              </span>
-            </div>
+          {["Add 2 underwriters Ontario", "Broker education Dominion Lending", "Portfolio review Alt-A ON", "Appraisal vendor SLA", "NS expansion compliance"].map((a, i) => (
+            <div key={i} className="stat-row"><span>{a}</span><span className={`badge ${i < 2 ? "badge-red" : "badge-amber"}`}>{i < 2 ? "High" : "Medium"}</span></div>
           ))}
         </div>
       </div>
 
       <div className="card" style={{ marginTop: 16 }}>
-        <div style={{ fontWeight: 700, marginBottom: 8 }}>AI-Generated Weekly Report (Preview)</div>
-        <p style={{ fontSize: 13, lineHeight: 1.7, margin: 0 }}>
-          Highclere processed 562 submissions in June (+4.8% MoM) with 472 approvals (84.0% rate).
-          Funded volume reached 418 files. Primary bottleneck remains underwriting capacity during
-          peak intake (Mon–Wed). Broker quality score improved to 74. Recommend capacity addition
-          and targeted broker education to sustain SLA through Q3 volume growth.
-        </p>
-        <button type="button" className="btn-primary" style={{ marginTop: 12 }}>Export Board Report</button>
+        <div style={{ fontWeight: 700, marginBottom: 8 }}>AI Weekly Report</div>
+        <p style={{ fontSize: 13, lineHeight: 1.7, margin: "0 0 12px" }}>{BOARD_REPORT.split("\n").slice(0, 8).join(" ")}</p>
+        <ExportButton label="Export Board Report" title="Highclere Weekly Executive Report" content={BOARD_REPORT} />
       </div>
     </>
   );

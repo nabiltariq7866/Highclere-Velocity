@@ -1,76 +1,75 @@
 "use client";
 
+import { useState } from "react";
 import { DemoMoment } from "@/components/DemoMoment";
+import { useDemoState } from "@/context/DemoStateProvider";
 import { FRAUD_ALERTS } from "@/data/mockData";
+import { FRAUD_FILE_DETAILS } from "@/data/extendedMockData";
 
 export function FraudView() {
+  const { fraudStatuses, setFraudStatus } = useDemoState();
+  const [expanded, setExpanded] = useState<number | null>(1);
+
   return (
     <>
       <h1 className="page-title">Fraud, Misrepresentation & Document Integrity</h1>
-      <p className="page-subtitle">Early detection of fraud signals, tampering & suspicious patterns</p>
+      <p className="page-subtitle">Authenticity checks, cross-file patterns — quarantine or clear alerts (updates audit)</p>
 
       <DemoMoment>
-        Same income document format appears across multiple unrelated applications with inconsistent employer
-        details — pattern flagged, files routed to fraud review, underwriting queue protected.
+        Pattern FP-2026-044 — quarantine suspicious files or clear false positives. Document authenticity panel per file.
       </DemoMoment>
 
-      <div className="kpi-grid">
-        <div className="kpi-card">
-          <div className="kpi-label">Active Fraud Reviews</div>
-          <div className="kpi-value" style={{ color: "var(--red-500)" }}>7</div>
-        </div>
-        <div className="kpi-card">
-          <div className="kpi-label">Patterns Detected (30d)</div>
-          <div className="kpi-value">14</div>
-        </div>
-        <div className="kpi-card">
-          <div className="kpi-label">False Positive Rate</div>
-          <div className="kpi-value">8.2%</div>
-        </div>
-        <div className="kpi-card">
-          <div className="kpi-label">Prevented Loss (est.)</div>
-          <div className="kpi-value">$2.4M</div>
-        </div>
-      </div>
-
       <div className="card">
-        <div style={{ fontWeight: 700, marginBottom: 12 }}>Fraud Alert Queue</div>
         <table className="data-table">
           <thead>
             <tr>
-              <th>Alert Type</th>
+              <th>Alert</th>
               <th>Severity</th>
-              <th>Files Affected</th>
-              <th>Detail</th>
-              <th>Action</th>
+              <th>Files</th>
+              <th>Status</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
             {FRAUD_ALERTS.map((a) => (
               <tr key={a.id}>
                 <td style={{ fontWeight: 600 }}>{a.type}</td>
+                <td><span className={`badge ${a.severity === "High" ? "badge-red" : "badge-amber"}`}>{a.severity}</span></td>
+                <td>{a.files}</td>
                 <td>
-                  <span className={`badge ${a.severity === "High" ? "badge-red" : "badge-amber"}`}>
-                    {a.severity}
+                  <span className={`badge ${fraudStatuses[a.id] === "cleared" ? "badge-green" : fraudStatuses[a.id] === "quarantined" ? "badge-red" : "badge-amber"}`}>
+                    {fraudStatuses[a.id] ?? "pending"}
                   </span>
                 </td>
-                <td>{a.files}</td>
-                <td style={{ fontSize: 12 }}>{a.detail}</td>
-                <td><button type="button" className="btn-secondary" style={{ padding: "4px 10px", fontSize: 11 }}>Review</button></td>
+                <td>
+                  <button type="button" className="btn-secondary" style={{ padding: "4px 8px", fontSize: 11, marginRight: 4 }} onClick={() => setFraudStatus(a.id, "quarantined")}>Quarantine</button>
+                  <button type="button" className="btn-secondary" style={{ padding: "4px 8px", fontSize: 11 }} onClick={() => setFraudStatus(a.id, "cleared")}>Clear</button>
+                  <button type="button" className="btn-secondary" style={{ padding: "4px 8px", fontSize: 11, marginLeft: 4 }} onClick={() => setExpanded(expanded === a.id ? null : a.id)}>Details</button>
+                </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
 
+      {expanded && (
+        <div className="card" style={{ marginTop: 16 }}>
+          <div style={{ fontWeight: 700, marginBottom: 12 }}>Document Authenticity — Pattern Files</div>
+          {FRAUD_FILE_DETAILS.map((f) => (
+            <div key={f.file} className="stat-row">
+              <div>
+                <div style={{ fontWeight: 600 }}>{f.file}</div>
+                <div style={{ fontSize: 11 }}>{f.check}: {f.detail}</div>
+              </div>
+              <span className={`badge ${f.result === "Failed" ? "badge-red" : "badge-amber"}`}>{f.result}</span>
+            </div>
+          ))}
+        </div>
+      )}
+
       <div className="ai-panel" style={{ marginTop: 16 }}>
-        <div style={{ fontWeight: 700, marginBottom: 8 }}>Cross-File Pattern Analysis</div>
-        <p style={{ fontSize: 13, margin: 0, lineHeight: 1.6 }}>
-          <strong>Pattern #FP-2026-044:</strong> Identical pay stub template (font, layout, metadata) found on
-          4 applications with different employers (TechCorp, GlobalFin, Apex Ltd, Summit Inc). Employer phone
-          numbers route to same VOIP block. Files HCV-10455, HCV-10461, HCV-10472, HCV-10480 quarantined.
-          Escalated to fraud review — underwriting blocked pending investigation.
-        </p>
+        <strong>Cross-File Pattern #FP-2026-044</strong> — Identical pay stub template on 4 applications.
+        Files HCV-10455, HCV-10461, HCV-10472, HCV-10480 {fraudStatuses[1] === "quarantined" ? "QUARANTINED — underwriting blocked" : "awaiting review"}.
       </div>
     </>
   );

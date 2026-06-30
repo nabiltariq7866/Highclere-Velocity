@@ -1,101 +1,113 @@
 "use client";
 
+import { useMemo, useState } from "react";
 import { DemoMoment } from "@/components/DemoMoment";
+import { CAPITAL_ALLOCATION, CREDIT_TIER_DIST } from "@/data/extendedMockData";
 import { PRODUCT_MIX, VOLUME_BY_MONTH } from "@/data/mockData";
 import { Bar, BarChart, CartesianGrid, Cell, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 
-const COLORS = ["#1bd488", "#055b65", "#45828b", "#9ab5b1", "#2f5f66", "#033840", "#6a9a9a"];
+const COLORS = ["#1bd488", "#055b65", "#45828b", "#9ab5b1", "#2f5f66"];
 
 export function PortfolioView() {
+  const [volumeGrowth, setVolumeGrowth] = useState(10);
+  const [altAShare, setAltAShare] = useState(18);
+
+  const scenario = useMemo(() => {
+    const base = 142;
+    const projected = base * (1 + volumeGrowth / 100);
+    const altARisk = altAShare > 22 ? "High — review recommended" : altAShare > 18 ? "Elevated — monitor" : "Within limits";
+    return { projected: projected.toFixed(0), altARisk };
+  }, [volumeGrowth, altAShare]);
+
   return (
     <>
       <h1 className="page-title">Capital Markets & Portfolio Risk</h1>
-      <p className="page-subtitle">Funded volume, product mix, credit quality & concentration monitoring</p>
+      <p className="page-subtitle">Credit tiers, capital allocation, scenario modeling sliders</p>
 
       <DemoMoment>
-        Leadership views next month&apos;s expected funding by product, province, LTV band — rising Alt-A
-        concentration in one region flagged for portfolio review.
+        Alt-A concentration in Ontario flagged — adjust scenario sliders to model volume growth and product mix risk.
       </DemoMoment>
 
-      <div className="alert-banner">
-        <strong>Concentration Alert:</strong> Alt-A volume in Ontario up 24% MoM — exceeds internal threshold.
-        Recommend portfolio review before month-end funding batch.
-      </div>
-
-      <div className="kpi-grid">
-        <div className="kpi-card">
-          <div className="kpi-label">Funded YTD</div>
-          <div className="kpi-value">1,000</div>
-        </div>
-        <div className="kpi-card">
-          <div className="kpi-label">Pipeline to Fund</div>
-          <div className="kpi-value">$142M</div>
-        </div>
-        <div className="kpi-card">
-          <div className="kpi-label">Avg Credit Score</div>
-          <div className="kpi-value">712</div>
-        </div>
-        <div className="kpi-card">
-          <div className="kpi-label">Avg LTV</div>
-          <div className="kpi-value">74.2%</div>
-        </div>
-      </div>
+      <div className="alert-banner">Concentration Alert: Alt-A volume in Ontario up 24% MoM — exceeds internal threshold.</div>
 
       <div className="grid-2">
         <div className="card">
+          <div style={{ fontWeight: 700, marginBottom: 12 }}>Credit Risk Distribution</div>
+          <ResponsiveContainer width="100%" height={220}>
+            <BarChart data={CREDIT_TIER_DIST}>
+              <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
+              <XAxis dataKey="tier" tick={{ fontSize: 11 }} />
+              <YAxis tick={{ fontSize: 11 }} />
+              <Tooltip />
+              <Bar dataKey="count" fill="var(--accent)" name="Files" />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+        <div className="card">
           <div style={{ fontWeight: 700, marginBottom: 12 }}>Product Mix</div>
-          <ResponsiveContainer width="100%" height={240}>
+          <ResponsiveContainer width="100%" height={220}>
             <PieChart>
-              <Pie data={PRODUCT_MIX} dataKey="volume" nameKey="product" cx="50%" cy="50%" outerRadius={80} label>
-                {PRODUCT_MIX.map((_, i) => (
-                  <Cell key={i} fill={COLORS[i % COLORS.length]} />
-                ))}
+              <Pie data={PRODUCT_MIX} dataKey="volume" nameKey="product" cx="50%" cy="50%" outerRadius={70} label>
+                {PRODUCT_MIX.map((_, i) => <Cell key={i} fill={COLORS[i % COLORS.length]} />)}
               </Pie>
               <Tooltip />
             </PieChart>
           </ResponsiveContainer>
         </div>
-        <div className="card">
-          <div style={{ fontWeight: 700, marginBottom: 12 }}>Monthly Funded Volume</div>
-          <ResponsiveContainer width="100%" height={240}>
-            <BarChart data={VOLUME_BY_MONTH}>
-              <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
-              <XAxis dataKey="month" tick={{ fontSize: 11 }} />
-              <YAxis tick={{ fontSize: 11 }} />
-              <Tooltip />
-              <Bar dataKey="funded" fill="var(--accent)" />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
       </div>
 
       <div className="card" style={{ marginTop: 16 }}>
+        <div style={{ fontWeight: 700, marginBottom: 12 }}>Capital Allocation — Investor Pools</div>
         <table className="data-table">
           <thead>
-            <tr>
-              <th>Product</th>
-              <th>Volume</th>
-              <th>Share</th>
-              <th>Avg LTV</th>
-              <th>Risk Tier</th>
-            </tr>
+            <tr><th>Pool</th><th>Allocated</th><th>Utilized</th><th>Yield</th></tr>
           </thead>
           <tbody>
-            {PRODUCT_MIX.map((p) => (
-              <tr key={p.product}>
-                <td style={{ fontWeight: 600 }}>{p.product}</td>
-                <td>{p.volume}</td>
-                <td>{p.share}%</td>
-                <td>{68 + p.share}%</td>
+            {CAPITAL_ALLOCATION.map((c) => (
+              <tr key={c.pool}>
+                <td style={{ fontWeight: 600 }}>{c.pool}</td>
+                <td>{c.allocated}</td>
                 <td>
-                  <span className={`badge ${p.product === "Alt-A" ? "badge-amber" : "badge-green"}`}>
-                    {p.product === "Alt-A" ? "Elevated" : "Standard"}
-                  </span>
+                  <div className="progress-bar" style={{ width: 80, display: "inline-block" }}>
+                    <div className="progress-fill" style={{ width: `${c.utilized}%` }} />
+                  </div>
+                  <span style={{ marginLeft: 6 }}>{c.utilized}%</span>
                 </td>
+                <td>{c.yield}</td>
               </tr>
             ))}
           </tbody>
         </table>
+      </div>
+
+      <div className="card" style={{ marginTop: 16 }}>
+        <div style={{ fontWeight: 700, marginBottom: 12 }}>Scenario Modeling (live)</div>
+        <div className="grid-2" style={{ marginBottom: 0 }}>
+          <div>
+            <label style={{ fontSize: 12, fontWeight: 600 }}>Volume growth %: <strong>{volumeGrowth}</strong></label>
+            <input type="range" min={-10} max={40} value={volumeGrowth} onChange={(e) => setVolumeGrowth(Number(e.target.value))} style={{ width: "100%" }} />
+          </div>
+          <div>
+            <label style={{ fontSize: 12, fontWeight: 600 }}>Alt-A share %: <strong>{altAShare}</strong></label>
+            <input type="range" min={10} max={35} value={altAShare} onChange={(e) => setAltAShare(Number(e.target.value))} style={{ width: "100%" }} />
+          </div>
+        </div>
+        <div className="ai-panel" style={{ marginTop: 12, fontSize: 13 }}>
+          <strong>Projected pipeline:</strong> ${scenario.projected}M next month (vs $142M base) ·{" "}
+          <strong>Alt-A risk:</strong> {scenario.altARisk}
+        </div>
+      </div>
+
+      <div className="card" style={{ marginTop: 16 }}>
+        <div style={{ fontWeight: 700, marginBottom: 8 }}>Monthly Funded Volume</div>
+        <ResponsiveContainer width="100%" height={180}>
+          <BarChart data={VOLUME_BY_MONTH}>
+            <XAxis dataKey="month" tick={{ fontSize: 11 }} />
+            <YAxis tick={{ fontSize: 11 }} />
+            <Tooltip />
+            <Bar dataKey="funded" fill="#055b65" />
+          </BarChart>
+        </ResponsiveContainer>
       </div>
     </>
   );

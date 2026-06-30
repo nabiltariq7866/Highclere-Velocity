@@ -2,8 +2,12 @@
 
 import { DemoMoment } from "@/components/DemoMoment";
 import { PROVINCE_STATS } from "@/data/mockData";
+import { PROVINCIAL_GUIDELINES } from "@/data/extendedMockData";
+import type { Province } from "@/lib/types";
+import { useState } from "react";
 
 export function ProvinceExpansionView() {
+  const [expandedProvince, setExpandedProvince] = useState<Province | null>("ON");
   return (
     <>
       <h1 className="page-title">Province Expansion & Licensing</h1>
@@ -104,6 +108,28 @@ export function ProvinceExpansionView() {
           <div className="stat-row"><span>NB — Moncton region</span><strong>71/100</strong></div>
           <div className="stat-row"><span>PEI</span><strong>58/100</strong></div>
         </div>
+      </div>
+
+      <div className="card" style={{ marginTop: 16 }}>
+        <div style={{ fontWeight: 700, marginBottom: 12 }}>Provincial Guideline Differences — click province</div>
+        <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 16 }}>
+          {(Object.keys(PROVINCIAL_GUIDELINES) as Province[]).map((p) => (
+            <button
+              key={p}
+              type="button"
+              className={expandedProvince === p ? "btn-primary" : "btn-secondary"}
+              style={{ padding: "6px 12px", fontSize: 12 }}
+              onClick={() => setExpandedProvince(p)}
+            >
+              {p}
+            </button>
+          ))}
+        </div>
+        {expandedProvince && (
+          <div className="ai-panel" style={{ fontSize: 13 }}>
+            <strong>{expandedProvince}</strong> — {PROVINCIAL_GUIDELINES[expandedProvince]}
+          </div>
+        )}
       </div>
     </>
   );
